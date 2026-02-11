@@ -1,0 +1,7 @@
+{
+  "name": "Miss",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

@@ -1,0 +1,20 @@
+.auth-wrap {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 24px;
+}
+
+ion-card {
+  width: min(420px, 100%);
+}
+
+.mt {
+  margin-top: 12px;
+}
+
+.divider {
+  text-align: center;
+  opacity: 0.7;
+  margin: 12px 0;
+}

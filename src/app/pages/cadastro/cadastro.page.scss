@@ -1,0 +1,18 @@
+.auth-wrap {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 24px;
+}
+
+ion-card {
+  width: min(480px, 100%);
+}
+
+.mt {
+  margin-top: 12px;
+}
+
+.terms {
+  margin-left: 8px;
+}

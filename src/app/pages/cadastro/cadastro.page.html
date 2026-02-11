@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <div class="auth-wrap">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Criar conta</ion-card-title>
+        <ion-card-subtitle>Preencha seus dados</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-input label="Nome" label-placement="floating" placeholder="Seu nome" formControlName="displayName">
+            </ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.controls.displayName.touched && form.controls.displayName.invalid">
+            Informe um nome válido (mín. 2 caracteres).
+          </ion-note>
+          <ion-item>
+            <ion-input type="email" label="E-mail" label-placement="floating" placeholder="voce@exemplo.com"
+              formControlName="email">
+            </ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.controls.email.touched && form.controls.email.invalid">
+            Informe um e-mail válido.
+          </ion-note>
+          <ion-item>
+            <ion-input [type]="pwHidden() ? 'password' : 'text'" label="Senha" label-placement="floating"
+              placeholder="••••••" formControlName="password">
+            </ion-input>
+            <ion-button fill="clear" slot="end" (click)="pwHidden.set(!pwHidden())" aria-label="Mostrar senha">
+              <ion-icon [name]="pwHidden() ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            Mínimo de 6 caracteres.
+          </ion-note>
+          <ion-item>
+            <ion-input [type]="pw2Hidden() ? 'password' : 'text'" label="Confirmar senha" label-placement="floating"
+              placeholder="••••••" formControlName="confirmPassword">
+            </ion-input>
+            <ion-button fill="clear" slot="end" (click)="pw2Hidden.set(!pw2Hidden())" aria-label="Mostrar senha">
+              <ion-icon [name]="pw2Hidden() ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.errors?.['passwordsDontMatch'] && form.controls.confirmPassword.touched">
+            As senhas não coincidem.
+          </ion-note>
+          <ion-item lines="none">
+            <ion-checkbox formControlName="terms"></ion-checkbox>
+            <ion-text class="terms">Aceito os termos de uso</ion-text>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.controls.terms.touched && form.controls.terms.invalid">
+            Você precisa aceitar os termos para continuar.
+          </ion-note>
+
+          <ion-button class="mt" type="submit" expand="block" [disabled]="form.invalid">Cadastrar</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
