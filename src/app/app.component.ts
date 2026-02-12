@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 export class AppComponent {
 
   public appPages = [
-    { title: 'Produtos', url: '/admin-produtos', icon: 'mail' }
+    { title: 'Produtos', url: '/produto', icon: 'mail' }
   ];
   //public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 

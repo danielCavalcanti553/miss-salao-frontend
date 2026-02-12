@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Produtos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- LOADING -->
+  <div *ngIf="loading && produtos.length === 0" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <!-- LISTA -->
+  <ion-list *ngIf="produtos.length > 0">
+
+    <ion-item *ngFor="let p of produtos">
+      <ion-thumbnail slot="start" *ngIf="p.images?.length">
+        <img [src]="p.images[0].src" />
+      </ion-thumbnail>
+
+      <ion-label>
+        <h2>{{ p.name?.pt }}</h2>
+
+        <p *ngIf="p.variants?.length">
+          R$ {{ p.variants[0].price }}
+        </p>
+
+        <p *ngIf="!p.has_stock" style="color: red;">
+          Sem estoque
+        </p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <!-- INFINITE SCROLL -->
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="carregarMais($event)" *ngIf="hasMore">
+
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando mais produtos...">
+    </ion-infinite-scroll-content>
+
+  </ion-infinite-scroll>
+
+</ion-content>
