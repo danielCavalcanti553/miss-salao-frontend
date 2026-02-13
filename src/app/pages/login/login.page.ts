@@ -62,6 +62,10 @@ export class LoginPage {
       });
     }*/
 
+  alertTest() {
+    alert('botão funcionando');
+  }
+
   async onSubmit() {
 
     if (this.loginForm.invalid) {

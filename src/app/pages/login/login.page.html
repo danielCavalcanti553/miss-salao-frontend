@@ -20,6 +20,11 @@
     <ion-button expand="block" class="login-button" type="submit" [disabled]="loginForm.invalid">
       ✨ Entrar na Miss
     </ion-button>
+
+    <ion-button expand="block" class="login-button" (click)="alertTest()">
+      Teste
+    </ion-button>
+
     <!--
     <ion-button expand="block" fill="outline" class="google-button" (click)="onGoogle()">
       <ion-icon name="logo-google" slot="start"></ion-icon>
