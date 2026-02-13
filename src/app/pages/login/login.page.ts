@@ -29,10 +29,6 @@ export class LoginPage {
   pwHidden = signal(true);
 
 
-  form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
-  });
 
   constructor(
     private fb: FormBuilder,
@@ -45,8 +41,8 @@ export class LoginPage {
   }
 
   async onSubmit() {
-    if (this.form.invalid) return;
-    const { email, password } = this.form.getRawValue();
+    if (this.loginForm.invalid) return;
+    const { email, password } = this.loginForm.getRawValue();
 
 
     const loader = await this.loading.create({ message: 'Entrando...' });
@@ -82,8 +78,8 @@ export class LoginPage {
 
   async onSignUp() {
 
-    if (this.form.invalid) return;
-    const { email, password } = this.form.getRawValue();
+    if (this.registerForm.invalid) return;
+    const { email, password } = this.registerForm.getRawValue();
     const loader = await this.loading.create({ message: 'Criando conta...' });
     await loader.present();
 
@@ -92,6 +88,18 @@ export class LoginPage {
       next: async () => {
         await loader.dismiss();
         this.router.navigateByUrl('/home');
+        this.toggleMode();
+
+        // 🔥 TOAST DE SUCESSO
+        const toast = await this.toast.create({
+          message: 'Conta criada com sucesso 👑✨',
+          duration: 2500,
+          color: 'success',
+          position: 'top'
+        });
+
+        await toast.present();
+
       },
       error: async (err) => {
         await loader.dismiss();
@@ -99,6 +107,39 @@ export class LoginPage {
       }
     });
   }
+
+  toggleMode() {
+    this.isLogin = !this.isLogin;
+  }
+
+  passwordMatchValidator(form: any) {
+    const password = form.get('password')?.value;
+    const confirm = form.get('confirmPassword')?.value;
+
+    if (!password || !confirm) {
+      return null; // ainda não validar enquanto está digitando
+    }
+
+    if (password !== confirm) {
+      return { mismatch: true };
+    }
+
+    return null;
+  }
+
+
+  isLogin = true; // controla qual formulário aparece
+
+  loginForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  registerForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required]]
+  }, { validators: this.passwordMatchValidator });
 
   private async showError(err: any) {
     const msg = (err && err.message) ? err.message : 'Falha ao autenticar';
