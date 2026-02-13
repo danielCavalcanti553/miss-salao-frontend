@@ -42,7 +42,11 @@ export class LoginPage {
 
   async onSubmit() {
 
+    alert('inicio')
+
     if (this.loginForm.invalid) return;
+
+    alert('Form valid')
 
     const loader = await this.loading.create({ message: 'Entrando...' });
     await loader.present();
@@ -55,9 +59,15 @@ export class LoginPage {
       await loader.dismiss();
 
       // 👇 AQUI ESTÁ O QUE FALTAVA
-      this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+      //this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+      alert('Consegui logar')
 
+      alert(this.auth.getUid)
+      this.auth.user$.subscribe(response => {
+        alert(response?.getIdToken)
+      })
     } catch (err: any) {
+      alert('Não Consegui logar')
       await loader.dismiss();
       alert('erro: ' + err?.message);
     }
