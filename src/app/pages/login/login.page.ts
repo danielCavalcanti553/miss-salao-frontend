@@ -42,36 +42,39 @@ export class LoginPage {
 
   async onSubmit() {
 
-    alert('inicio')
+    alert('inicio');
 
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      alert('form inválido');
+      return;
+    }
 
-    alert('Form valid')
-
-    //const loader = await this.loading.create({ message: 'Entrando...' });
-    //await loader.present();
+    alert('form válido');
 
     const { email, password } = this.loginForm.getRawValue();
 
     try {
-      await this.auth.signInEmail(email!, password!);
+      const credential = await this.auth.signInEmail(email!, password!);
 
-      //await loader.dismiss();
+      alert('Consegui logar');
 
-      // 👇 AQUI ESTÁ O QUE FALTAVA
-      //this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
-      alert('Consegui logar')
+      // 🔥 UID direto do retorno
+      alert('UID direto: ' + credential.user.uid);
 
-      alert(this.auth.getUid)
-      this.auth.user$.subscribe(response => {
-        alert(response?.getIdToken)
-      })
+      // 🔥 UID usando método do service
+      const uid = await this.auth.getUid();
+      alert('UID via service: ' + uid);
+
+      // 🔥 Estado do user atual
+      const currentUser = credential.user;
+      alert('Current user email: ' + currentUser.email);
+
     } catch (err: any) {
-      alert('Não Consegui logar')
-      //await loader.dismiss();
+      alert('Não Consegui logar');
       alert('erro: ' + err?.message);
     }
   }
+
 
 
 
