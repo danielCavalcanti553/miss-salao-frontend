@@ -42,6 +42,11 @@ export class LoginPage {
 
   async onSubmit() {
 
+    const ok = await this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+    alert('navigate result: ' + ok);
+
+    /*
+
     alert('inicio');
 
     if (this.loginForm.invalid) {
@@ -68,11 +73,12 @@ export class LoginPage {
       // 🔥 Estado do user atual
       const currentUser = credential.user;
       alert('Current user email: ' + currentUser.email);
+      this.router.navigateByUrl('/home', { replaceUrl: true });
 
     } catch (err: any) {
       alert('Não Consegui logar');
       alert('erro: ' + err?.message);
-    }
+    }*/
   }
 
 
