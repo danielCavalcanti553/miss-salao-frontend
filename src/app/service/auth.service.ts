@@ -11,8 +11,8 @@ export class AuthService {
   constructor(private auth: Auth) { }
 
 
-  signInEmail(email: string, password: string): Observable<any> {
-    return from(signInWithEmailAndPassword(this.auth, email, password));
+  async signInEmail(email: string, password: string) {
+    return await signInWithEmailAndPassword(this.auth, email, password);
   }
 
 

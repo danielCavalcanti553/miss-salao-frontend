@@ -77,15 +77,14 @@ export class LoginPage {
 
     alert('vai tentar logar');
 
-    this.auth.signInEmail(email!, password!).subscribe({
-      next: () => {
-        alert('login sucesso');
-      },
-      error: (err) => {
-        alert('erro: ' + err.message);
-      }
-    });
+    try {
+      await this.auth.signInEmail(email!, password!);
+      alert('login sucesso');
+    } catch (err: any) {
+      alert('erro: ' + err?.message);
+    }
   }
+
 
 
   async onGoogle() {
