@@ -85,3 +85,36 @@ ion-note {
   cursor: pointer;
   text-decoration: underline;
 }
+
+.signup-link {
+  margin-top: 22px;
+  font-size: 14px;
+  color: #777;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 6px;
+  font-weight: 600;
+  color: #b22222;
+  cursor: pointer;
+  position: relative;
+}
+
+.link-button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: #b22222;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.link-button:hover::after {
+  transform: scaleX(1);
+}
