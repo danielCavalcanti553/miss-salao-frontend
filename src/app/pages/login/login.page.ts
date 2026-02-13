@@ -40,50 +40,25 @@ export class LoginPage {
     addIcons({ eyeOutline, logoGoogle });
   }
 
-  /*
-    async onSubmit() {
-      if (this.loginForm.invalid) return;
-      const { email, password } = this.loginForm.getRawValue();
-
-
-      const loader = await this.loading.create({ message: 'Entrando...' });
-      await loader.present();
-
-
-      this.auth.signInEmail(email!, password!).subscribe({
-        next: async () => {
-          await loader.dismiss();
-          this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
-        },
-        error: async (err) => {
-          await loader.dismiss();
-          this.showError(err);
-        }
-      });
-    }*/
-
-  alertTest() {
-    alert('botão funcionando');
-  }
-
   async onSubmit() {
 
-    if (this.loginForm.invalid) {
-      alert('form inválido');
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.getRawValue();
 
-    alert('vai tentar logar');
+    const loader = await this.loading.create({ message: 'Entrando...' });
+    await loader.present();
 
     try {
       await this.auth.signInEmail(email!, password!);
-      alert('login sucesso');
+      await loader.dismiss();
+      this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
     } catch (err: any) {
-      alert('erro: ' + err?.message);
+      await loader.dismiss();
+      this.showError(err);
     }
   }
+
 
 
 
