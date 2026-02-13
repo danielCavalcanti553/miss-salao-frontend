@@ -1,30 +1,50 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth.guard';
-import { AdminGuard } from './service/admin.guard';
+import { TabsPage } from './tabs/tabs.page';
+import { AuthGuard } from './service/admin.guard';
+
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+  // 🔐 Login fora das tabs
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login.page').then(m => m.LoginPage)
+    loadComponent: () =>
+      import('./pages/login/login.page').then(m => m.LoginPage)
   },
+
+  // Área protegida com tabs
   {
-    path: 'home',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
+    path: 'tabs',
+    component: TabsPage,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('./pages/produto/produto.page').then(m => m.ProdutoPage)
+      },
+      {
+        path: 'buscar',
+        loadComponent: () =>
+          import('./pages/buscar/buscar.page').then(m => m.BuscarPage)
+      },
+      {
+        path: 'conta',
+        loadComponent: () =>
+          import('./pages/conta/conta.page').then(m => m.ContaPage)
+      },
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      }
+    ]
   },
+
   {
-    path: 'cadastro',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/cadastro/cadastro.page').then(m => m.CadastroPage)
-  },
-  {
-    path: 'admin-produtos',
-    loadComponent: () => import('./pages/admin-produtos/admin-produtos.page').then(m => m.AdminProdutosPage),
-    canActivate: [AdminGuard]
-  },
-  {
-    path: 'produto',
-    loadComponent: () => import('./pages/produto/produto.page').then( m => m.ProdutoPage)
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   }
+
 ];

@@ -3,12 +3,56 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ProductModel } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/service/product.service';
+import { addIcons } from 'ionicons';
+import {
+  homeOutline,
+  searchOutline,
+  heartOutline,
+  bagOutline,
+  personOutline
+} from 'ionicons/icons';
+import {
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonContent,
+  IonList,
+  IonItem,
+  IonThumbnail,
+  IonSpinner,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonRouterOutlet,
 
+} from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-produto',
   templateUrl: './produto.page.html',
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule,
+    RouterModule,
+    IonTabs,
+    IonTitle,
+    IonTabBar,
+    IonToolbar,
+    IonTabButton,
+    IonContent,
+    IonSpinner,
+    IonThumbnail,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonHeader,
+    IonLabel,
+    IonRouterOutlet]
 })
 export class ProdutoPage implements OnInit {
 
@@ -17,7 +61,15 @@ export class ProdutoPage implements OnInit {
   loading = false;
   hasMore = true;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {
+    addIcons({
+      homeOutline,
+      searchOutline,
+      heartOutline,
+      bagOutline,
+      personOutline
+    });
+  }
 
   ngOnInit() {
     this.carregarProdutos();

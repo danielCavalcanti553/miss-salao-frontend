@@ -51,7 +51,7 @@ export class LoginPage {
     this.auth.signInEmail(email!, password!).subscribe({
       next: async () => {
         await loader.dismiss();
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
       },
       error: async (err) => {
         await loader.dismiss();

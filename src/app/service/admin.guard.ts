@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
+import { authState } from '@angular/fire/auth';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
 
-  constructor(private auth: Auth) { }
+  constructor(private auth: Auth, private router: Router) { }
 
-  async canActivate(): Promise<boolean> {
-    const user = this.auth.currentUser;
-    if (!user) return false;
-
-    const token = await user.getIdTokenResult();
-    return token.claims['role'] === 'admin';
+  canActivate() {
+    return authState(this.auth).pipe(
+      map(user => {
+        if (user) {
+          return true;
+        } else {
+          this.router.navigateByUrl('/login');
+          return false;
+        }
+      })
+    );
   }
 }
