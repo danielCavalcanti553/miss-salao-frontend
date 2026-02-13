@@ -40,7 +40,7 @@ export class LoginPage {
     addIcons({ eyeOutline, logoGoogle });
   }
 
-  /*
+
   async onSubmit() {
     if (this.loginForm.invalid) return;
     const { email, password } = this.loginForm.getRawValue();
@@ -60,10 +60,6 @@ export class LoginPage {
         this.showError(err);
       }
     });
-  }*/
-
-  async onSubmit() {
-    alert('clicou no botão');
   }
 
   async onGoogle() {

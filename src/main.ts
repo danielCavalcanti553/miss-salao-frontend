@@ -6,10 +6,13 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideAuth } from '@angular/fire/auth';
 import { environment } from './environments/environment.prod';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+
+import { getAuth, initializeAuth, indexedDBLocalPersistence } from 'firebase/auth';
+import { Capacitor } from '@capacitor/core';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -17,7 +20,17 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom(HttpClientModule),
+
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+
+    provideAuth(() => {
+      const app = initializeApp(environment.firebase);
+
+      return Capacitor.isNativePlatform()
+        ? initializeAuth(app, {
+          persistence: indexedDBLocalPersistence
+        })
+        : getAuth(app);
+    })
   ],
-}).catch(err => console.error(err));;
+}).catch(err => console.error(err));
