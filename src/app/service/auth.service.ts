@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, authState, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import { Auth, authState, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { from, map, Observable } from 'rxjs';
 
 
@@ -16,8 +16,8 @@ export class AuthService {
   }
 
 
-  signUpEmail(email: string, password: string): Observable<any> {
-    return from(createUserWithEmailAndPassword(this.auth, email, password));
+  async signUpEmail(email: string, password: string): Promise<UserCredential> {
+    return await createUserWithEmailAndPassword(this.auth, email, password);
   }
 
 

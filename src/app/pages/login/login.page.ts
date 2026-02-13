@@ -28,8 +28,6 @@ export class LoginPage {
 
   pwHidden = signal(true);
 
-
-
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -41,50 +39,28 @@ export class LoginPage {
   }
 
   async onSubmit() {
-
-    const ok = await this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
-    alert('navigate result: ' + ok);
-
-    /*
-
-    alert('inicio');
-
     if (this.loginForm.invalid) {
       alert('form inválido');
       return;
     }
 
-    alert('form válido');
-
     const { email, password } = this.loginForm.getRawValue();
 
     try {
-      const credential = await this.auth.signInEmail(email!, password!);
-
-      alert('Consegui logar');
-
-      // 🔥 UID direto do retorno
-      alert('UID direto: ' + credential.user.uid);
-
-      // 🔥 UID usando método do service
-      const uid = await this.auth.getUid();
-      alert('UID via service: ' + uid);
-
-      // 🔥 Estado do user atual
-      const currentUser = credential.user;
-      alert('Current user email: ' + currentUser.email);
-      this.router.navigateByUrl('/home', { replaceUrl: true });
-
+      await this.auth.signInEmail(email!, password!);
+      await this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
     } catch (err: any) {
-      alert('Não Consegui logar');
-      alert('erro: ' + err?.message);
-    }*/
+
+      const toast = await this.toast.create({
+        message: 'Usuário/Senha incorreto! 👑✨',
+        duration: 2500,
+        color: 'danger',
+        position: 'top'
+      });
+      await toast.present();
+
+    }
   }
-
-
-
-
-
 
   async onGoogle() {
     const loader = await this.loading.create({ message: 'Autenticando Google...' });
@@ -100,38 +76,111 @@ export class LoginPage {
       }
     });
   }
+  /*
+    async onSignUp() {
 
-  async onSignUp() {
+      if (this.registerForm.invalid) return;
 
-    if (this.registerForm.invalid) return;
-    const { email, password } = this.registerForm.getRawValue();
-    const loader = await this.loading.create({ message: 'Criando conta...' });
-    await loader.present();
+      const { email, password } = this.registerForm.getRawValue();
 
+      const loader = await this.loading.create({ message: 'Criando conta...' });
+      await loader.present();
 
-    this.auth.signUpEmail(email!, password!).subscribe({
-      next: async () => {
+      try {
+
+        const credential = await this.auth.signUpEmail(email!, password!);
+
         await loader.dismiss();
-        this.router.navigateByUrl('/home');
-        this.toggleMode();
 
-        // 🔥 TOAST DE SUCESSO
+        // 🔥 Toast de sucesso
         const toast = await this.toast.create({
           message: 'Conta criada com sucesso 👑✨',
           duration: 2500,
           color: 'success',
           position: 'top'
         });
-
         await toast.present();
 
-      },
-      error: async (err) => {
+        // 🔥 Após criar conta, volta para login
+        this.toggleMode();
+
+        // opcional: limpar formulário
+        this.registerForm.reset();
+
+      } catch (err: any) {
         await loader.dismiss();
         this.showError(err);
       }
+    }*/
+
+  async onSignUp() {
+
+    if (this.registerForm.invalid) return;
+
+    const { email, password } = this.registerForm.getRawValue();
+
+    const loader = await this.loading.create({
+      message: 'Criando conta...'
     });
+
+    await loader.present();
+
+    try {
+
+      const credential = await this.auth.signUpEmail(email!, password!);
+
+      await loader.dismiss();
+
+      // 🔥 Toast de sucesso
+      const successToast = await this.toast.create({
+        message: 'Conta criada com sucesso 👑✨',
+        duration: 2500,
+        color: 'success',
+        position: 'top'
+      });
+
+      await successToast.present();
+
+      // 🔁 Volta para tela de login
+      this.toggleMode();
+
+      // 🧹 Limpa formulário
+      this.registerForm.reset();
+
+    } catch (err: any) {
+
+      await loader.dismiss();
+
+      let message = 'Erro ao criar conta.';
+
+      if (err.code === 'auth/email-already-in-use') {
+        message = 'Este email já está cadastrado.';
+      }
+
+      if (err.code === 'auth/invalid-email') {
+        message = 'Email inválido.';
+      }
+
+      if (err.code === 'auth/weak-password') {
+        message = 'Senha muito fraca (mínimo 6 caracteres).';
+      }
+
+      if (err.code === 'auth/network-request-failed') {
+        message = 'Erro de conexão. Verifique sua internet.';
+      }
+
+      const errorToast = await this.toast.create({
+        message,
+        duration: 3000,
+        color: 'danger',
+        position: 'top'
+      });
+
+      await errorToast.present();
+    }
   }
+
+
 
   toggleMode() {
     this.isLogin = !this.isLogin;
