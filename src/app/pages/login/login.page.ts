@@ -42,10 +42,7 @@ export class LoginPage {
 
   async onSubmit() {
 
-    if (this.loginForm.invalid) {
-      alert('form inválido');
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     const loader = await this.loading.create({ message: 'Entrando...' });
     await loader.present();
@@ -54,13 +51,18 @@ export class LoginPage {
 
     try {
       await this.auth.signInEmail(email!, password!);
-      alert('login sucesso');
+
+      await loader.dismiss();
+
+      // 👇 AQUI ESTÁ O QUE FALTAVA
+      this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+
     } catch (err: any) {
+      await loader.dismiss();
       alert('erro: ' + err?.message);
     }
-
-    await loader.dismiss();
   }
+
 
 
 
