@@ -48,15 +48,15 @@ export class LoginPage {
 
     alert('Form valid')
 
-    const loader = await this.loading.create({ message: 'Entrando...' });
-    await loader.present();
+    //const loader = await this.loading.create({ message: 'Entrando...' });
+    //await loader.present();
 
     const { email, password } = this.loginForm.getRawValue();
 
     try {
       await this.auth.signInEmail(email!, password!);
 
-      await loader.dismiss();
+      //await loader.dismiss();
 
       // 👇 AQUI ESTÁ O QUE FALTAVA
       //this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
@@ -68,7 +68,7 @@ export class LoginPage {
       })
     } catch (err: any) {
       alert('Não Consegui logar')
-      await loader.dismiss();
+      //await loader.dismiss();
       alert('erro: ' + err?.message);
     }
   }
