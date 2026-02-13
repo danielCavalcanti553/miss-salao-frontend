@@ -40,27 +40,49 @@ export class LoginPage {
     addIcons({ eyeOutline, logoGoogle });
   }
 
+  /*
+    async onSubmit() {
+      if (this.loginForm.invalid) return;
+      const { email, password } = this.loginForm.getRawValue();
+
+
+      const loader = await this.loading.create({ message: 'Entrando...' });
+      await loader.present();
+
+
+      this.auth.signInEmail(email!, password!).subscribe({
+        next: async () => {
+          await loader.dismiss();
+          this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+        },
+        error: async (err) => {
+          await loader.dismiss();
+          this.showError(err);
+        }
+      });
+    }*/
 
   async onSubmit() {
-    if (this.loginForm.invalid) return;
+
+    if (this.loginForm.invalid) {
+      alert('form inválido');
+      return;
+    }
+
     const { email, password } = this.loginForm.getRawValue();
 
-
-    const loader = await this.loading.create({ message: 'Entrando...' });
-    await loader.present();
-
+    alert('vai tentar logar');
 
     this.auth.signInEmail(email!, password!).subscribe({
-      next: async () => {
-        await loader.dismiss();
-        this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+      next: () => {
+        alert('login sucesso');
       },
-      error: async (err) => {
-        await loader.dismiss();
-        this.showError(err);
+      error: (err) => {
+        alert('erro: ' + err.message);
       }
     });
   }
+
 
   async onGoogle() {
     const loader = await this.loading.create({ message: 'Autenticando Google...' });
