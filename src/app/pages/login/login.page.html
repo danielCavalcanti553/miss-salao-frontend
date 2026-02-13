@@ -1,48 +1,56 @@
-<ion-content [fullscreen]="true">
-  <div class="auth-wrap">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Entrar</ion-card-title>
-        <ion-card-subtitle>Use seu e-mail ou Google</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <ion-item>
-            <ion-input type="email" label="E-mail" label-placement="floating" placeholder="voce@exemplo.com"
-              formControlName="email">
-            </ion-input>
-          </ion-item>
-          <ion-note color="danger" *ngIf="form.controls.email.touched && form.controls.email.invalid">
-            Informe um e-mail válido.
-          </ion-note>
+<ion-content [fullscreen]="true" class="login-container">
 
-
-          <ion-item>
-            <ion-input [type]="pwHidden() ? 'password' : 'text'" label="Senha" label-placement="floating"
-              placeholder="••••••" formControlName="password">
-            </ion-input>
-            <ion-button fill="clear" slot="end" (click)="pwHidden.set(!pwHidden())" aria-label="Mostrar senha">
-              <ion-icon [name]="pwHidden() ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
-            </ion-button>
-          </ion-item>
-          <ion-note color="danger" *ngIf="form.controls.password.touched && form.controls.password.invalid">
-            Mínimo de 6 caracteres.
-          </ion-note>
-
-
-          <ion-button class="mt" type="submit" expand="block" [disabled]="form.invalid">Entrar</ion-button>
-          <ion-button class="mt" color="medium" expand="block" [routerLink]="['/cadastro']">
-            Criar conta
-          </ion-button>
-
-
-          <div class="divider">ou</div>
-          <ion-button class="mt" color="tertiary" expand="block" (click)="onGoogle()">
-            <ion-icon slot="start" name="logo-google"></ion-icon>
-            Entrar com Google
-          </ion-button>
-        </form>
-      </ion-card-content>
-    </ion-card>
+  <div class="logo-container">
+    <img src="/assets/logo-miss.png" class="logo" />
   </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+
+    <ion-item lines="none" class="input-item">
+      <ion-input formControlName="email" type="email" placeholder="Email">
+      </ion-input>
+    </ion-item>
+
+    <ion-note color="danger" *ngIf="form.controls.email.invalid && form.controls.email.touched">
+      Email inválido
+    </ion-note>
+
+    <ion-item lines="none" class="input-item password-item">
+      <ion-input formControlName="password" [type]="pwHidden() ? 'password' : 'text'" placeholder="Senha">
+      </ion-input>
+
+      <ion-icon slot="end" name="eye-outline" class="eye-icon" (click)="pwHidden.set(!pwHidden())">
+      </ion-icon>
+
+    </ion-item>
+
+    <ion-note color="danger" *ngIf="form.controls.password.invalid && form.controls.password.touched">
+      Mínimo 6 caracteres
+    </ion-note>
+
+    <ion-button expand="block" class="login-button" type="submit" [disabled]="form.invalid">
+
+      ✨ Entrar na Miss
+
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" class="google-button" (click)="onGoogle()">
+
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      Entrar com Google
+
+    </ion-button>
+
+    <div class="signup-link">
+      <span>Não tem conta?</span>
+      <a (click)="onSignUp()">Criar agora</a>
+    </div>
+
+  </form>
+
+  <form [formGroup]="form" (ngSubmit)="onSignUp()" class="form-container">
+
+  </form>
+
+
 </ion-content>

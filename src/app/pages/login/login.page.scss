@@ -1,20 +1,87 @@
-.auth-wrap {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  padding: 24px;
+.login-container {
+  --background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-ion-card {
-  width: min(420px, 100%);
+.logo-container {
+  margin-top: 50px;
+
 }
 
-.mt {
+.logo {
+  width: 90%;
+
+}
+
+
+.form-container {
+  padding: 0 30px;
+}
+
+.input-item {
+  --background: #ffffff;
+  --color: #2c2c2c;
+  --placeholder-color: #9a9a9a;
+
+  border-radius: 16px;
+  margin-bottom: 18px;
+  padding: 6px 7px;
+
+  border: 1.5px solid rgba(178, 138, 46, 0.25);
+  /* dourado suave */
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+ion-note {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  /* 👈 espaço abaixo do erro */
+  font-size: 15px;
+}
+
+
+
+.password-item {
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon {
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
+
+.login-button {
+  --background: #b22222;
+  --border-radius: 12px;
+  --color: #ffffff;
+  height: 48px;
+  font-weight: 600;
+  margin-top: 20px;
+
+}
+
+.google-button {
+  --border-radius: 12px;
+  height: 48px;
   margin-top: 12px;
 }
 
-.divider {
-  text-align: center;
-  opacity: 0.7;
-  margin: 12px 0;
+.signup-link {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #b22222;
+  font-weight: 600;
+  margin-left: 5px;
+  cursor: pointer;
+  text-decoration: underline;
 }

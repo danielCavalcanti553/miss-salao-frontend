@@ -9,6 +9,9 @@ import {
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
   IonItem, IonInput, IonButton, IonIcon, IonNote
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { eyeOutline, logoGoogle } from 'ionicons/icons';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -37,7 +40,9 @@ export class LoginPage {
     private router: Router,
     private toast: ToastController,
     private loading: LoadingController,
-  ) { }
+  ) {
+    addIcons({ eyeOutline, logoGoogle });
+  }
 
   async onSubmit() {
     if (this.form.invalid) return;
@@ -76,6 +81,7 @@ export class LoginPage {
   }
 
   async onSignUp() {
+
     if (this.form.invalid) return;
     const { email, password } = this.form.getRawValue();
     const loader = await this.loading.create({ message: 'Criando conta...' });
