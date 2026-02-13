@@ -76,42 +76,6 @@ export class LoginPage {
       }
     });
   }
-  /*
-    async onSignUp() {
-
-      if (this.registerForm.invalid) return;
-
-      const { email, password } = this.registerForm.getRawValue();
-
-      const loader = await this.loading.create({ message: 'Criando conta...' });
-      await loader.present();
-
-      try {
-
-        const credential = await this.auth.signUpEmail(email!, password!);
-
-        await loader.dismiss();
-
-        // 🔥 Toast de sucesso
-        const toast = await this.toast.create({
-          message: 'Conta criada com sucesso 👑✨',
-          duration: 2500,
-          color: 'success',
-          position: 'top'
-        });
-        await toast.present();
-
-        // 🔥 Após criar conta, volta para login
-        this.toggleMode();
-
-        // opcional: limpar formulário
-        this.registerForm.reset();
-
-      } catch (err: any) {
-        await loader.dismiss();
-        this.showError(err);
-      }
-    }*/
 
   async onSignUp() {
 

@@ -40,7 +40,7 @@
   </form>
 
   <!-- CADASTRO -->
-  <form *ngIf="!isLogin" [formGroup]="registerForm" (ngSubmit)="onSignUp()" class="form-container">
+  <div *ngIf="!isLogin" [formGroup]="registerForm" class="form-container">
 
     <ion-item lines="none" class="input-item">
       <ion-input formControlName="email" type="email" placeholder="Email">
@@ -61,7 +61,8 @@
       Senhas não coincidem
     </ion-note>
 
-    <ion-button expand="block" class="login-button" type="submit" [disabled]="registerForm.invalid">
+    <ion-button expand="block" class="login-button" type="button" [disabled]="registerForm.invalid"
+      (click)="onSignUp()">
       👑 Criar Conta
     </ion-button>
 
@@ -70,6 +71,6 @@
       <a (click)="toggleMode()">Entrar</a>
     </div>
 
-  </form>
+    </form>
 
 </ion-content>
