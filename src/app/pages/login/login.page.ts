@@ -62,40 +62,26 @@ export class LoginPage {
     }
   }
 
-  async onGoogle() {
-    const loader = await this.loading.create({ message: 'Autenticando Google...' });
-    await loader.present();
-    this.auth.signInGoogle().subscribe({
-      next: async () => {
-        await loader.dismiss();
-        this.router.navigateByUrl('/home');
-      },
-      error: async (err) => {
-        await loader.dismiss();
-        this.showError(err);
-      }
-    });
-  }
 
   async onSignUp() {
 
-    if (this.registerForm.invalid) return;
+    alert('incio form');
+
+    if (this.registerForm.invalid) {
+      alert('form inválido');
+      return;
+    }
+
+
+    alert('pegando forms');
 
     const { email, password } = this.registerForm.getRawValue();
 
-    const loader = await this.loading.create({
-      message: 'Criando conta...'
-    });
-
-    await loader.present();
-
     try {
 
-      const credential = await this.auth.signUpEmail(email!, password!);
+      alert('inciando cadastro');
+      await this.auth.signUpEmail(email!, password!);
 
-      await loader.dismiss();
-
-      // 🔥 Toast de sucesso
       const successToast = await this.toast.create({
         message: 'Conta criada com sucesso 👑✨',
         duration: 2500,
@@ -108,12 +94,15 @@ export class LoginPage {
       // 🔁 Volta para tela de login
       this.toggleMode();
 
+
+      alert('finalizando');
+
       // 🧹 Limpa formulário
       this.registerForm.reset();
 
     } catch (err: any) {
 
-      await loader.dismiss();
+      alert('erro catch');
 
       let message = 'Erro ao criar conta.';
 
@@ -142,6 +131,21 @@ export class LoginPage {
 
       await errorToast.present();
     }
+  }
+
+  async onGoogle() {
+    const loader = await this.loading.create({ message: 'Autenticando Google...' });
+    await loader.present();
+    this.auth.signInGoogle().subscribe({
+      next: async () => {
+        await loader.dismiss();
+        this.router.navigateByUrl('/home');
+      },
+      error: async (err) => {
+        await loader.dismiss();
+        this.showError(err);
+      }
+    });
   }
 
 
