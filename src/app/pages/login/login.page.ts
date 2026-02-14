@@ -102,7 +102,7 @@ export class LoginPage {
 
     } catch (err: any) {
 
-      alert('erro catch');
+      alert('finalizando');
 
       let message = 'Erro ao criar conta.';
 

@@ -57,12 +57,12 @@
       </ion-input>
     </ion-item>
 
-    <ion-note color="danger" *ngIf="registerForm.get('confirmPassword')?.errors?.['mismatch']">
+    <ion-note color="danger" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
       Senhas não coincidem
     </ion-note>
 
-    <ion-button expand="block" class="login-button" type="button" [disabled]="registerForm.invalid"
-      (click)="onSignUp()">
+    <ion-button expand="block" class="login-button" type="button" (click)="onSignUp()">
+
       👑 Criar Conta
     </ion-button>
 
