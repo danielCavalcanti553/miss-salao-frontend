@@ -39,6 +39,14 @@ export class LoginPage {
   }
 
   async onSubmit() {
+
+    alert('início');
+
+    fetch('https://www.google.com')
+
+      .then(() => alert('REDE OK'))
+      .catch(() => alert('REDE BLOQUEADA'));
+
     if (this.loginForm.invalid) {
       alert('form inválido');
       return;
@@ -79,6 +87,8 @@ export class LoginPage {
 
     try {
 
+
+
       alert('inciando cadastro');
       await this.auth.signUpEmail(email!, password!);
 
@@ -91,7 +101,7 @@ export class LoginPage {
 
       await successToast.present();
 
-      // 🔁 Volta para tela de login
+      // Volta para tela de login
       this.toggleMode();
 
 
@@ -105,6 +115,8 @@ export class LoginPage {
       alert('finalizando ' + err);
 
       let message = 'Erro ao criar conta.';
+
+
 
       if (err.code === 'auth/email-already-in-use') {
         message = 'Este email já está cadastrado.';
@@ -133,6 +145,7 @@ export class LoginPage {
     }
   }
 
+  /*
   async onGoogle() {
     const loader = await this.loading.create({ message: 'Autenticando Google...' });
     await loader.present();
@@ -146,7 +159,7 @@ export class LoginPage {
         this.showError(err);
       }
     });
-  }
+  }*/
 
 
 
