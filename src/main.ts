@@ -5,7 +5,7 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth } from '@angular/fire/auth';
 import { environment } from './environments/environment.prod';
 import { importProvidersFrom } from '@angular/core';
@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { getAuth, initializeAuth, indexedDBLocalPersistence } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
+import { getApp, getApps, initializeApp } from 'firebase/app';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -24,7 +25,9 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
 
     provideAuth(() => {
-      const app = initializeApp(environment.firebase);
+      const app = getApps().length
+        ? getApp()
+        : initializeApp(environment.firebase);
 
       return Capacitor.isNativePlatform()
         ? initializeAuth(app, {
@@ -33,4 +36,4 @@ bootstrapApplication(AppComponent, {
         : getAuth(app);
     })
   ],
-}).catch(err => console.error(err));
+});
