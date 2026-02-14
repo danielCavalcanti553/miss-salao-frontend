@@ -13,7 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { getAuth, initializeAuth, indexedDBLocalPersistence } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
-import { getApp } from 'firebase/app';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -22,12 +21,10 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom(HttpClientModule),
 
-    // ✅ Inicializa UMA VEZ
     provideFirebaseApp(() => initializeApp(environment.firebase)),
 
-    // ✅ Usa a mesma instância
     provideAuth(() => {
-      const app = getApp();
+      const app = initializeApp(environment.firebase);
 
       return Capacitor.isNativePlatform()
         ? initializeAuth(app, {
