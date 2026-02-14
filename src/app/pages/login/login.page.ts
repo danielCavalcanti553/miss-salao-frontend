@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular/standalone';
 import {
   IonContent,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
@@ -40,83 +40,84 @@ export class LoginPage {
 
   async onSubmit() {
 
-    alert('início');
-
-    fetch('https://www.google.com')
-
-      .then(() => alert('REDE OK'))
-      .catch(() => alert('REDE BLOQUEADA'));
-
     if (this.loginForm.invalid) {
-      alert('form inválido');
       return;
     }
 
     const { email, password } = this.loginForm.getRawValue();
 
+    const loader = await this.loading.create({
+      message: 'Entrando...',
+      spinner: 'crescent'
+    });
+
+    await loader.present();
+
     try {
+
       await this.auth.signInEmail(email!, password!);
+
+      await loader.dismiss();
+
       await this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+
     } catch (err: any) {
+
+      await loader.dismiss();
 
       const toast = await this.toast.create({
         message: 'Usuário/Senha incorreto! 👑✨',
         duration: 2500,
         color: 'danger',
-        position: 'top'
+        position: 'top',
+        cssClass: 'custom-toast'
       });
-      await toast.present();
 
+      await toast.present();
     }
   }
 
 
+
   async onSignUp() {
 
-    alert('incio form');
-
     if (this.registerForm.invalid) {
-      alert('form inválido');
       return;
     }
 
-
-    alert('pegando forms');
-
     const { email, password } = this.registerForm.getRawValue();
+
+    const loader = await this.loading.create({
+      message: 'Criando conta...',
+      spinner: 'crescent'
+    });
+
+    await loader.present();
 
     try {
 
-
-
-      alert('inciando cadastro');
       await this.auth.signUpEmail(email!, password!);
+
+      await loader.dismiss();
 
       const successToast = await this.toast.create({
         message: 'Conta criada com sucesso 👑✨',
         duration: 2500,
         color: 'success',
-        position: 'top'
+        position: 'top',
+        cssClass: 'custom-toast'
       });
 
       await successToast.present();
 
-      // Volta para tela de login
       this.toggleMode();
-
-
-      alert('finalizando');
-
-      // 🧹 Limpa formulário
       this.registerForm.reset();
 
     } catch (err: any) {
 
-      alert('finalizando ' + err);
+      await loader.dismiss();
 
       let message = 'Erro ao criar conta.';
-
-
 
       if (err.code === 'auth/email-already-in-use') {
         message = 'Este email já está cadastrado.';
@@ -138,12 +139,14 @@ export class LoginPage {
         message,
         duration: 3000,
         color: 'danger',
-        position: 'top'
+        position: 'top',
+        cssClass: 'custom-toast'
       });
 
       await errorToast.present();
     }
   }
+
 
   /*
   async onGoogle() {
