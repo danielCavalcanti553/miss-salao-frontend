@@ -1,13 +1,59 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>buscar</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="flow-content ion-padding">
+  <div class="top-title" *ngIf="etapa > 1" (click)="voltar()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">buscar</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <h2 *ngIf="etapa === 1">Escolha o serviço</h2>
+  <h2 *ngIf="etapa === 2">Quem vai atender?</h2>
+  <h2 *ngIf="etapa === 3">Escolher Horário</h2>
+
+  <div *ngIf="etapa === 1">
+    <ion-card *ngFor="let servico of servicos" class="item-card" (click)="selecionarServico(servico)">
+      <ion-card-content class="row-between">
+        <div>
+          <strong>{{ servico.nome }}</strong>
+          <p>{{ servico.minutos }} min · R$ {{ servico.preco }}</p>
+        </div>
+        <span>›</span>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="etapa === 2">
+    <ion-card *ngFor="let profissional of profissionais" class="item-card" (click)="selecionarProfissional(profissional)">
+      <ion-card-content>
+        <strong>{{ profissional.nome }}</strong>
+        <p>
+          <ion-icon name="star"></ion-icon>
+          {{ profissional.nota }} · {{ profissional.especialidade }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="etapa === 3">
+    <div class="horarios">
+      <ion-button
+        *ngFor="let horario of horarios"
+        fill="outline"
+        [color]="horarioSelecionado === horario ? 'primary' : 'medium'"
+        (click)="selecionarHorario(horario)">
+        {{ horario }}
+      </ion-button>
+    </div>
+
+    <ion-item lines="none" class="soft-field">
+      <ion-input placeholder="Nome" [formControl]="form.controls.clienteNome"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none" class="soft-field">
+      <ion-input placeholder="Telefone" [formControl]="form.controls.clienteTelefone"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none" class="soft-field">
+      <ion-input placeholder="Observação" [formControl]="form.controls.observacoes"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" class="confirm-btn" (click)="confirmar()">Confirmar</ion-button>
+  </div>
 </ion-content>
