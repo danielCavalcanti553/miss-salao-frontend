@@ -1,11 +1,46 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Produtos</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="home-content ion-padding">
+  <div class="hello">Olá, cliente 👋</div>
 
-<ion-content [fullscreen]="true">
+  <ion-button expand="block" class="cta" (click)="abrirNovoAgendamento()">
+    <ion-icon slot="start" name="calendar-outline"></ion-icon>
+    Agendar Horário
+  </ion-button>
 
+  <h3>Próximo agendamento</h3>
+  <ion-card class="next-card" *ngIf="proximoAgendamento; else semAgenda">
+    <ion-card-content>
+      <div class="row-between">
+        <div>
+          <strong>{{ proximoAgendamento.servico }}</strong>
+          <p>{{ proximoAgendamento.profissional || 'Profissional a definir' }}</p>
+          <small>{{ formatarData(proximoAgendamento.dataHora) }}</small>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
+  <ng-template #semAgenda>
+    <ion-note>Você ainda não possui horários marcados.</ion-note>
+  </ng-template>
 
+  <h3 class="section-title">Serviços agendados</h3>
+  <ion-list class="agenda-list" *ngIf="agendamentos.length > 0">
+    <ion-item *ngFor="let agendamento of agendamentos">
+      <ion-label>
+        <strong>{{ agendamento.servico }}</strong>
+        <p>{{ agendamento.profissional || 'Profissional a definir' }}</p>
+        <small>{{ formatarData(agendamento.dataHora) }}</small>
+      </ion-label>
+      <ion-button fill="clear" color="danger" (click)="excluir(agendamento)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <div class="chips-wrap">
+    <ion-chip *ngFor="let categoria of categorias">
+      <ion-label>{{ categoria }}</ion-label>
+    </ion-chip>
+  </div>
 </ion-content>

@@ -1,0 +1,50 @@
+.flow-content {
+  --background: linear-gradient(180deg, #fdf2f2 0%, #f6dfe0 100%);
+}
+
+.top-title {
+  font-size: 24px;
+  margin-top: 8px;
+  color: #96656b;
+}
+
+h2 {
+  color: #85585e;
+  margin: 8px 0 14px;
+}
+
+.item-card {
+  border-radius: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 16px rgba(160, 88, 101, 0.15);
+
+  p {
+    margin: 6px 0 0;
+    color: #7f6567;
+  }
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.horarios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.soft-field {
+  --background: #fff2f2;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.confirm-btn {
+  --background: linear-gradient(180deg, #f48da3, #dd5f79);
+  --border-radius: 12px;
+  margin-top: 16px;
+}

@@ -1,14 +1,43 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>conta</ion-title>
+    <ion-title>Minha conta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">conta</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-button (click)="logout()">Sair</ion-button>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <p>Cadastro de serviços</p>
+
+  <form [formGroup]="servicoForm" (ngSubmit)="cadastrarServico()">
+    <ion-item>
+      <ion-input label="Nome do serviço" labelPlacement="stacked" formControlName="nome"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="number" label="Duração (min)" labelPlacement="stacked" formControlName="minutos"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="number" label="Preço" labelPlacement="stacked" formControlName="preco"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Profissionais (separados por vírgula)" labelPlacement="stacked" formControlName="profissionais"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" class="ion-margin-top" type="submit" [disabled]="servicoForm.invalid">
+      Cadastrar serviço
+    </ion-button>
+  </form>
+
+  <ion-list class="ion-margin-top">
+    <ion-item *ngFor="let servico of servicos">
+      <ion-label>
+        <h3>{{ servico.nome }}</h3>
+        <p>{{ servico.minutos }} min · R$ {{ servico.preco }}</p>
+        <small *ngIf="servico.profissionais?.length">Profissionais: {{ servico.profissionais?.length }}</small>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button color="medium" expand="block" (click)="logout()">Sair</ion-button>
 </ion-content>

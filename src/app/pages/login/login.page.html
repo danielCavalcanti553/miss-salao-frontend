@@ -1,46 +1,40 @@
-<ion-content [fullscreen]="true">
-  <div class="auth-wrap">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Entrar</ion-card-title>
-        <ion-card-subtitle>Use seu e-mail ou Google</ion-card-subtitle>
-      </ion-card-header>
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="bg-glow"></div>
+
+  <div class="login-shell ion-padding">
+    <div class="brand-block">
+      <div class="brand-icon">✦</div>
+      <h1>Miss Maravilha</h1>
+    </div>
+
+    <ion-card class="login-card">
       <ion-card-content>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <ion-item>
-            <ion-input type="email" label="E-mail" label-placement="floating" placeholder="voce@exemplo.com"
-              formControlName="email">
-            </ion-input>
+          <ion-item lines="none" class="soft-input">
+            <ion-input type="email" placeholder="E-mail" formControlName="email"></ion-input>
           </ion-item>
-          <ion-note color="danger" *ngIf="form.controls.email.touched && form.controls.email.invalid">
-            Informe um e-mail válido.
-          </ion-note>
 
-
-          <ion-item>
-            <ion-input [type]="pwHidden() ? 'password' : 'text'" label="Senha" label-placement="floating"
-              placeholder="••••••" formControlName="password">
-            </ion-input>
-            <ion-button fill="clear" slot="end" (click)="pwHidden.set(!pwHidden())" aria-label="Mostrar senha">
-              <ion-icon [name]="pwHidden() ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+          <ion-item lines="none" class="soft-input ion-margin-top">
+            <ion-input [type]="pwHidden() ? 'password' : 'text'" placeholder="Senha" formControlName="password"></ion-input>
+            <ion-button fill="clear" slot="end" (click)="pwHidden.set(!pwHidden())">
+              {{ pwHidden() ? 'Mostrar' : 'Ocultar' }}
             </ion-button>
           </ion-item>
-          <ion-note color="danger" *ngIf="form.controls.password.touched && form.controls.password.invalid">
-            Mínimo de 6 caracteres.
-          </ion-note>
 
-
-          <ion-button class="mt" type="submit" expand="block" [disabled]="form.invalid">Entrar</ion-button>
-          <ion-button class="mt" color="medium" expand="block" [routerLink]="['/cadastro']">
-            Criar conta
+          <ion-button class="ion-margin-top" expand="block" type="submit" [disabled]="form.invalid">
+            Entrar
           </ion-button>
-
 
           <div class="divider">ou</div>
-          <ion-button class="mt" color="tertiary" expand="block" (click)="onGoogle()">
-            <ion-icon slot="start" name="logo-google"></ion-icon>
+
+          <ion-button color="light" expand="block" (click)="onGoogle()">
             Entrar com Google
           </ion-button>
+
+          <p class="signup-copy">
+            Não tem conta?
+            <a (click)="onSignUp()">Criar conta</a>
+          </p>
         </form>
       </ion-card-content>
     </ion-card>
