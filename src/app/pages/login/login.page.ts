@@ -66,7 +66,7 @@ export class LoginPage {
     this.auth.signInGoogle().subscribe({
       next: async () => {
         await loader.dismiss();
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
       },
       error: async (err) => {
         await loader.dismiss();
@@ -85,7 +85,7 @@ export class LoginPage {
     this.auth.signUpEmail(email!, password!).subscribe({
       next: async () => {
         await loader.dismiss();
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
       },
       error: async (err) => {
         await loader.dismiss();

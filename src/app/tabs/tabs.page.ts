@@ -12,13 +12,7 @@ import {
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
-import {
-  homeOutline,
-  searchOutline,
-  heartOutline,
-  bagOutline,
-  personOutline
-} from 'ionicons/icons';
+import { calendarOutline, addCircleOutline, personOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -38,10 +32,8 @@ import {
 export class TabsPage {
   constructor() {
     addIcons({
-      homeOutline,
-      searchOutline,
-      heartOutline,
-      bagOutline,
+      calendarOutline,
+      addCircleOutline,
       personOutline
     });
   }

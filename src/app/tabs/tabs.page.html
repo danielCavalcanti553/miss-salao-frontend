@@ -1,34 +1,20 @@
 <ion-tabs>
-
   <ion-router-outlet></ion-router-outlet>
 
   <ion-tab-bar slot="bottom">
-
-    <ion-tab-button tab="home" [routerLink]="['/tabs/home']">
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Início</ion-label>
+    <ion-tab-button tab="agenda" [routerLink]="['/tabs/home']">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>Agenda</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="buscar" [routerLink]="['/tabs/buscar']">
-      <ion-icon name="search-outline"></ion-icon>
-      <ion-label>Buscar</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="favoritos" [routerLink]="['/tabs/favoritos']">
-      <ion-icon name="heart-outline"></ion-icon>
-      <ion-label>Favoritos</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="sacola" [routerLink]="['/tabs/sacola']">
-      <ion-icon name="bag-outline"></ion-icon>
-      <ion-label>Sacola</ion-label>
+    <ion-tab-button tab="novo" [routerLink]="['/tabs/buscar']">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      <ion-label>Novo</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="conta" [routerLink]="['/tabs/conta']">
       <ion-icon name="person-outline"></ion-icon>
       <ion-label>Conta</ion-label>
     </ion-tab-button>
-
   </ion-tab-bar>
-
 </ion-tabs>
