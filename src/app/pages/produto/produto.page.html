@@ -1,33 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Meus agendamentos</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="home-content ion-padding">
+  <div class="hello">Olá, cliente 👋</div>
 
-<ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="carregarAgendamentos($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <ion-button expand="block" class="cta" (click)="abrirNovoAgendamento()">
+    <ion-icon slot="start" name="calendar-outline"></ion-icon>
+    Agendar Horário
+  </ion-button>
 
-  <ion-list *ngIf="agendamentos.length > 0">
-    <ion-item *ngFor="let agendamento of agendamentos">
-      <ion-label>
-        <h2>{{ agendamento.servico }}</h2>
-        <p>{{ formatarData(agendamento.dataHora) }}</p>
-        <p>{{ agendamento.profissional || 'Profissional a definir' }}</p>
-        <p *ngIf="agendamento.observacoes">Obs: {{ agendamento.observacoes }}</p>
-      </ion-label>
-      <ion-badge [color]="agendamento.status === 'confirmado' ? 'success' : 'warning'">
-        {{ agendamento.status || 'pendente' }}
-      </ion-badge>
-    </ion-item>
-  </ion-list>
+  <h3>Próximo agendamento</h3>
+  <ion-card class="next-card" *ngIf="proximoAgendamento; else semAgenda">
+    <ion-card-content>
+      <div class="row-between">
+        <div>
+          <strong>{{ proximoAgendamento.servico }}</strong>
+          <p>{{ proximoAgendamento.profissional || 'Profissional a definir' }}</p>
+          <small>{{ formatarData(proximoAgendamento.dataHora) }}</small>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
-  <div class="ion-padding" *ngIf="!carregando && agendamentos.length === 0">
-    <ion-note>Nenhum agendamento encontrado. Crie seu primeiro horário na aba “Novo”.</ion-note>
-  </div>
+  <ng-template #semAgenda>
+    <ion-note>Você ainda não possui horários marcados.</ion-note>
+  </ng-template>
 
-  <div class="ion-padding" *ngIf="carregando">
-    <ion-note>Carregando agenda...</ion-note>
+  <div class="chips-wrap">
+    <ion-chip *ngFor="let categoria of categorias">
+      <ion-label>{{ categoria }}</ion-label>
+    </ion-chip>
   </div>
 </ion-content>

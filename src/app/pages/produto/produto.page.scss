@@ -1,0 +1,47 @@
+.home-content {
+  --background: linear-gradient(180deg, #faeded 0%, #f7d9db 100%);
+}
+
+.hello {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 10px 0 20px;
+  color: #5f4348;
+}
+
+.cta {
+  --background: linear-gradient(180deg, #f48da3, #dd5f79);
+  --border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+h3 {
+  color: #5f4348;
+}
+
+.next-card {
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(170, 89, 109, 0.18);
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    margin: 6px 0;
+  }
+}
+
+.chips-wrap {
+  margin-top: 26px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  ion-chip {
+    --background: #fff5f5;
+    color: #825357;
+  }
+}

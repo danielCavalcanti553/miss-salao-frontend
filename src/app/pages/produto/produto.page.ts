@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonContent,
-  IonList,
-  IonItem,
+  IonCard,
+  IonCardContent,
+  IonButton,
+  IonChip,
   IonLabel,
-  IonBadge,
-  IonRefresher,
-  IonRefresherContent,
+  IonIcon,
   IonNote,
   ToastController
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { calendarOutline, chevronForwardOutline } from 'ionicons/icons';
 import { Agendamento, AgendamentoService } from 'src/app/service/agendamento.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-produto',
@@ -23,46 +23,36 @@ import { Agendamento, AgendamentoService } from 'src/app/service/agendamento.ser
   standalone: true,
   imports: [
     CommonModule,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonContent,
-    IonList,
-    IonItem,
+    IonCard,
+    IonCardContent,
+    IonButton,
+    IonChip,
     IonLabel,
-    IonBadge,
-    IonRefresher,
-    IonRefresherContent,
+    IonIcon,
     IonNote
   ]
 })
 export class ProdutoPage implements OnInit {
   agendamentos: Agendamento[] = [];
-  carregando = false;
+
+  categorias = ['Unhas', 'Cabelos', 'Spa', 'Sobrancelha'];
 
   constructor(
     private agendamentoService: AgendamentoService,
-    private toast: ToastController
-  ) {}
-
-  ngOnInit(): void {
-    this.carregarAgendamentos();
+    private toast: ToastController,
+    private router: Router
+  ) {
+    addIcons({ calendarOutline, chevronForwardOutline });
   }
 
-  carregarAgendamentos(event?: CustomEvent) {
-    this.carregando = true;
+  ngOnInit(): void {
     this.agendamentoService.listarMeusAgendamentos().subscribe({
-      next: async (lista) => {
-        this.agendamentos = lista;
-        this.carregando = false;
-        event?.detail.complete();
-      },
+      next: (lista) => (this.agendamentos = lista),
       error: async () => {
-        this.carregando = false;
-        event?.detail.complete();
         const t = await this.toast.create({
-          message: 'Não foi possível carregar os agendamentos.',
-          duration: 2500,
+          message: 'Não foi possível carregar sua agenda.',
+          duration: 2200,
           color: 'danger'
         });
         await t.present();
@@ -70,9 +60,18 @@ export class ProdutoPage implements OnInit {
     });
   }
 
-  formatarData(dataHora: string): string {
+  get proximoAgendamento() {
+    return this.agendamentos[0];
+  }
+
+  abrirNovoAgendamento() {
+    this.router.navigateByUrl('/tabs/buscar');
+  }
+
+  formatarData(dataHora?: string): string {
+    if (!dataHora) return '';
     const data = new Date(dataHora);
-    return `${data.toLocaleDateString('pt-BR')} ${data.toLocaleTimeString('pt-BR', {
+    return `${data.toLocaleDateString('pt-BR')} • ${data.toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit'
     })}`;
