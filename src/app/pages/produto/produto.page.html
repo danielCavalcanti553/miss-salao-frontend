@@ -1,11 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Produtos</ion-title>
+    <ion-title>Meus agendamentos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="carregarAgendamentos($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
+  <ion-list *ngIf="agendamentos.length > 0">
+    <ion-item *ngFor="let agendamento of agendamentos">
+      <ion-label>
+        <h2>{{ agendamento.servico }}</h2>
+        <p>{{ formatarData(agendamento.dataHora) }}</p>
+        <p>{{ agendamento.profissional || 'Profissional a definir' }}</p>
+        <p *ngIf="agendamento.observacoes">Obs: {{ agendamento.observacoes }}</p>
+      </ion-label>
+      <ion-badge [color]="agendamento.status === 'confirmado' ? 'success' : 'warning'">
+        {{ agendamento.status || 'pendente' }}
+      </ion-badge>
+    </ion-item>
+  </ion-list>
 
+  <div class="ion-padding" *ngIf="!carregando && agendamentos.length === 0">
+    <ion-note>Nenhum agendamento encontrado. Crie seu primeiro horário na aba “Novo”.</ion-note>
+  </div>
 
+  <div class="ion-padding" *ngIf="carregando">
+    <ion-note>Carregando agenda...</ion-note>
+  </div>
 </ion-content>
