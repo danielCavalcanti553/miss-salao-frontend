@@ -48,12 +48,15 @@ import { RouterModule } from '@angular/router';
     IonItem,
     IonIcon,
     IonHeader,
-    IonLabel,
-    IonRouterOutlet]
+    IonLabel]
 })
 export class ProdutoPage implements OnInit {
   ngOnInit(): void {
 
+  }
+
+  teste() {
+    console.log('ok')
   }
 
 }

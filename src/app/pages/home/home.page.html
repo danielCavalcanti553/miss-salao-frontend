@@ -1,6 +1,159 @@
-<ion-content class="ion-padding">
-  <h2>Bem-vindo 👋</h2>
-  <ion-button (click)="logout()">Sair</ion-button>
+<!--
+<ion-header class="app-header" translucent="true">
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
 
 
+    <div class="logo-container">
+      <img src="assets/logo-miss.png" alt="Clube da Miss" />
+    </div>
+
+  </ion-toolbar>
+</ion-header>
+-->
+<ion-content [fullscreen]="true">
+
+  <div class="app-header" translucent="true">
+
+    <!-- Botão Menu Lateral -->
+    <ion-buttons slot="start" class="btn-principal-home">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+
+    <!-- Logo Central -->
+    <div class="logo-container">
+      <img src="assets/logo-miss.png" alt="Clube da Miss" />
+    </div>
+
+
+  </div>
+
+  <ion-grid>
+
+    <ion-row class="banner-princial">
+      <ion-col>
+        <ion-img src="/assets/banner-principal.png"></ion-img>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="titulo-servicos app-title">
+      <ion-col>
+        Serviços
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="categorias">
+      <ion-col>
+        <div>
+          <ion-img src="/assets/icones/categoria_cabelos.png"></ion-img>
+        </div>
+      </ion-col>
+      <ion-col class="ion-margin-horizontal">
+        <div>
+          <ion-img src="/assets/icones/categoria_unha.png"></ion-img>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-img src="/assets/icones/categoria_sobrancelha.png"></ion-img>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-img src="/assets/icones/categoria_sobrancelha.png"></ion-img>
+        </div>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="gold-wrapper">
+          <div class="gold-card" style="padding-top: 5px;">
+            <ion-row>
+              <ion-col size="1" style="padding: 20px; text-align: right;">
+                <ion-icon name="calendar-outline" size="8" style="font-size: 20px;"></ion-icon>
+              </ion-col>
+              <ion-col size="7" style="padding: 22px 20px;">
+                <span> Agendamento Rápido</span>
+              </ion-col>
+              <ion-col size="2">
+                <ion-button class="btn-gold" routerLink="/agenda">AGENDAR</ion-button>
+              </ion-col>
+
+            </ion-row>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="titulo-servicos app-title" style="margin-top: 20px;">
+      <ion-col>
+        Profissionais do Salão
+      </ion-col>
+    </ion-row>
+
+
+
+    <ion-row>
+      <ion-col>
+        <div class="gold-wrapper-white">
+          <div class="gold-card">
+            <ion-row class="people">
+              <ion-col size="3" style="padding: 20px; text-align: right;">
+                <div class="avatar">
+                  <ion-img src="/assets/people/pro1.png"></ion-img>
+                </div>
+              </ion-col>
+              <ion-col size="5">
+
+                <span style="font-weight: bold;"> Carolina Ferreira</span>
+
+                <span> Cabeleireiro</span>
+                <div>
+                  <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                    name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon>
+                </div>
+              </ion-col>
+              <ion-col size="1">
+                <ion-button class="btn-gold" disabled>AGENDAR</ion-button>
+
+              </ion-col>
+
+            </ion-row>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="gold-wrapper-white">
+          <div class="gold-card">
+            <ion-row class=" people">
+              <ion-col size="3" style="padding: 20px; text-align: right;">
+                <div class="avatar">
+                  <ion-img src="/assets/people/pro2.png"></ion-img>
+                </div>
+              </ion-col>
+              <ion-col size="5">
+                <span style="font-weight: bold;"> Carolina Ferreira</span>
+                <span> Manicure</span>
+                <div>
+                  <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                    name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon>
+                </div>
+              </ion-col>
+              <ion-col size="1">
+                <ion-button class="btn-gold" disabled>AGENDAR</ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

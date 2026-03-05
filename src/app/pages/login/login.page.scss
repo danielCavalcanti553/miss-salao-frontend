@@ -1,5 +1,5 @@
 .login-container {
-  --background: #fff;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,6 +19,7 @@
 
 .form-container {
   padding: 0 30px;
+  margin-top: 30px;
 }
 
 .input-item {
@@ -58,7 +59,7 @@ ion-note {
 }
 
 .login-button {
-  --background: #b22222;
+  --background: #C3880A;
   --border-radius: 12px;
   --color: #ffffff;
   height: 48px;
@@ -98,7 +99,7 @@ ion-note {
   padding: 0;
   margin-left: 6px;
   font-weight: 600;
-  color: #b22222;
+  color: #C3880A;
   cursor: pointer;
   position: relative;
 }

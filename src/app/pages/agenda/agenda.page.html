@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar class="toolbar-agenda">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/home" text="" icon="arrow-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h3 class="titulo-horario">1. Selecione o serviço</h3>
+        <div class="categorias">
+
+          <div class="categoria" [class.ativo]="categoriaSelecionada === 'unhas'"
+            (click)="selecionarCategoria('unhas')">
+            <ion-img src="/assets/icones/categoria_unha.png"></ion-img>
+            <span>Unhas</span>
+          </div>
+
+          <div class="categoria" [class.ativo]="categoriaSelecionada === 'cabelos'"
+            (click)="selecionarCategoria('cabelos')">
+            <ion-img src="/assets/icones/categoria_cabelos.png"></ion-img>
+            <span>Cabelos</span>
+          </div>
+
+          <div class="categoria" [class.ativo]="categoriaSelecionada === 'sobrancelha'"
+            (click)="selecionarCategoria('sobrancelha')">
+            <ion-img src="/assets/icones/categoria_sobrancelha.png"></ion-img>
+            <span>Sobrancelha</span>
+          </div>
+
+          <div class="categoria" [class.ativo]="categoriaSelecionada === 'estetica'"
+            (click)="selecionarCategoria('estetica')">
+            <ion-img src="/assets/icones/categoria_spa.png"></ion-img>
+            <span>Estetica</span>
+          </div>
+
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="select-servico">
+
+          <ion-item>
+            <ion-select aria-label="Fruit" placeholder="Selecione os Serviços" [multiple]="true">
+              <ion-select-option value="apples">Corte</ion-select-option>
+              <ion-select-option value="oranges">Hidratação</ion-select-option>
+              <ion-select-option value="bananas">Coloração</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h3 class="titulo-horario">2. Selecione o dia</h3>
+        <div class="agenda-header">
+          <button (click)="semanaAnterior()">
+            <ion-icon name="chevron-back-circle"></ion-icon>
+          </button>
+          <span class="titulo">{{ mesAtual }}</span>
+          <button (click)="proximaSemana()">
+            <ion-icon name="chevron-forward-circle"></ion-icon>
+          </button>
+        </div>
+        <div class="dias-container">
+          <div class="dia" *ngFor="let dia of dias" [class.ativo]="diaSelecionado === dia.data"
+            (click)="selecionarDia(dia.data)">
+            <span class="semana">{{ dia.semana }}</span>
+            <span class="numero">{{ dia.numero }}</span>
+          </div>
+
+        </div>
+
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h3 class="titulo-horario">3. Selecione o horário</h3>
+        <div class="horarios-container">
+          <div class="horario" *ngFor="let h of horarios" [class.ativo]="horarioSelecionado === h"
+            (click)="selecionarHorario(h)">
+            {{h}}
+          </div>
+        </div>
+
+        <ion-button expand="block" class="btn-confirmar" [disabled]="!horarioSelecionado || !diaSelecionado"
+          (click)="confirmarAgendamento()">
+          Confirmar Agendamento
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--
+  <ion-list>
+    <ion-item>
+      <ion-select label="Serviço" placeholder="Nenhum Serviço">
+        <ion-select-option value="apple">Corte</ion-select-option>
+        <ion-select-option value="banana">Escova</ion-select-option>
+        <ion-select-option value="orange">Mão</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select label="Profissional" label-placement="fixed" placeholder="Sem preferência">
+        <ion-select-option value="apple">Sem preferência</ion-select-option>
+        <ion-select-option value="apple">Carolina Martins</ion-select-option>
+        <ion-select-option value="banana">Monica Santos</ion-select-option>
+        <ion-select-option value="orange">Patricia Gomes</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>-->
+</ion-content>

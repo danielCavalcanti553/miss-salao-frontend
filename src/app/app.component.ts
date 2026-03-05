@@ -13,7 +13,11 @@ import {
   IonIcon,
   IonLabel,
   IonRouterOutlet,
-  IonRouterLink
+  IonRouterLink,
+  IonTitle,
+  IonToolbar,
+  IonHeader,
+  IonImg
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { CommonModule } from '@angular/common';
@@ -46,7 +50,11 @@ import { map } from 'rxjs/operators';
     IonIcon,
     IonLabel,
     IonRouterLink,
-    IonRouterOutlet
+    IonRouterOutlet,
+    IonTitle,
+    IonToolbar,
+    IonHeader,
+    IonImg
   ],
 })
 export class AppComponent {
@@ -57,4 +65,8 @@ export class AppComponent {
 
   user = toSignal(this.auth.user$, { initialValue: null });
   isLoggedIn$ = this.auth.user$.pipe(map(u => !!u));
+
+  logoff() {
+    alert('ok')
+  }
 }

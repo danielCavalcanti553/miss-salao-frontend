@@ -7,7 +7,10 @@ import { ToastController, LoadingController } from '@ionic/angular/standalone';
 import {
   IonContent,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-  IonItem, IonInput, IonButton, IonIcon, IonNote
+  IonItem, IonInput, IonButton, IonIcon, IonNote, IonCol,
+  IonGrid,
+  IonRow,
+  IonImg
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, logoGoogle } from 'ionicons/icons';
@@ -22,7 +25,10 @@ import { eyeOutline, logoGoogle } from 'ionicons/icons';
     IonContent,
     RouterLink,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-    IonItem, IonInput, IonButton, IonIcon, IonNote]
+    IonItem, IonInput, IonButton, IonIcon, IonNote, IonCol,
+    IonGrid,
+    IonRow,
+    IonImg]
 })
 export class LoginPage {
 
@@ -59,7 +65,7 @@ export class LoginPage {
 
       await loader.dismiss();
 
-      await this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+      await this.router.navigateByUrl('/home', { replaceUrl: true });
 
     } catch (err: any) {
 
