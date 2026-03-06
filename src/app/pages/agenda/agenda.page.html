@@ -15,12 +15,15 @@
         <h3 class="titulo-horario">1. Selecione o serviço</h3>
         <div class="categorias">
 
-          <div class="categoria" [class.ativo]="categoriaSelecionada === 'unhas'"
-            (click)="selecionarCategoria('unhas')">
-            <ion-img src="/assets/icones/categoria_unha.png"></ion-img>
-            <span>Unhas</span>
-          </div>
+          <div *ngFor="let c of categorias" class="categoria" [class.ativo]="categoriaSelecionada === c.idCategoria"
+            (click)="selecionarCategoria(c.idCategoria)">
 
+            <ion-img [src]="'/assets/icones/' + c.icone"></ion-img>
+
+            <span>{{ c.nome }}</span>
+
+          </div>
+          <!--
           <div class="categoria" [class.ativo]="categoriaSelecionada === 'cabelos'"
             (click)="selecionarCategoria('cabelos')">
             <ion-img src="/assets/icones/categoria_cabelos.png"></ion-img>
@@ -38,7 +41,7 @@
             <ion-img src="/assets/icones/categoria_spa.png"></ion-img>
             <span>Estetica</span>
           </div>
-
+-->
         </div>
       </ion-col>
     </ion-row>
@@ -48,10 +51,9 @@
         <div class="select-servico">
 
           <ion-item>
-            <ion-select aria-label="Fruit" placeholder="Selecione os Serviços" [multiple]="true">
-              <ion-select-option value="apples">Corte</ion-select-option>
-              <ion-select-option value="oranges">Hidratação</ion-select-option>
-              <ion-select-option value="bananas">Coloração</ion-select-option>
+            <ion-select aria-label="Serviços" placeholder="Selecione os Serviços" [multiple]="true"
+              [(ngModel)]="servicosSelecionados">
+              <ion-select-option value="{{s.descricao}}" *ngFor="let s of servicos">{{s.descricao}}</ion-select-option>
             </ion-select>
           </ion-item>
 

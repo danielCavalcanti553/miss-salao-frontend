@@ -9,6 +9,10 @@ import {
 
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { CategoriasService } from 'src/app/service/categoria.service';
+import { Categoria } from 'src/app/models/categoria.model';
+import { ServicosService } from 'src/app/service/servicos.service';
+import { Servico } from 'src/app/models/servico.model';
 addIcons({
   'chevron-back-circle': chevronBackCircle,
   'chevron-forward-circle': chevronForwardCircle,
@@ -24,18 +28,29 @@ addIcons({
 })
 export class AgendaPage implements OnInit {
 
-  constructor() { }
-
-  categoriaSelecionada = 'cabelos';
-
-  selecionarCategoria(categoria: string) {
-    this.categoriaSelecionada = categoria;
-  }
-
+  categorias: Categoria[] = [];
+  servicos: Servico[] = [];
+  categoriaSelecionada = '';
+  servicosSelecionados = '';
   dias: any[] = [];
   diaSelecionado: string = '';
 
+  constructor(private categoriasService: CategoriasService, private servicosService: ServicosService) { }
 
+  async ngOnInit() {
+    this.categorias = await this.categoriasService.listar();
+    this.gerarSemana();
+  }
+
+  selecionarCategoria(categoria: string) {
+    this.categoriaSelecionada = categoria;
+
+    this.servicos = [];
+    this.servicosService.buscarPorCategoria(categoria).then(resp => {
+      this.servicos = resp;
+    })
+
+  }
 
   gerarDias() {
 
@@ -63,9 +78,7 @@ export class AgendaPage implements OnInit {
 
   inicioSemana: Date = new Date();
 
-  ngOnInit() {
-    this.gerarSemana();
-  }
+
 
   gerarSemana() {
 
@@ -142,4 +155,9 @@ export class AgendaPage implements OnInit {
     alert(`Agendado para ${this.diaSelecionado} às ${this.horarioSelecionado}`);
 
   }
+
+
+
+
+
 }
