@@ -23,6 +23,9 @@ export class ServicosService {
   constructor(private firestore: Firestore) { }
 
   private servicosRef = collection(this.firestore, 'servicos');
+  private profissionaisRef = collection(this.firestore, 'profissionais');
+  private agendamentosRef = collection(this.firestore, 'agendamentos');
+
 
   // LISTAR TODOS
   async listar(): Promise<Servico[]> {
@@ -99,4 +102,20 @@ export class ServicosService {
 
   }
 
+  async buscarAgendaProfissional(profissionalId: string, data: string) {
+
+    const docRef = doc(
+      this.firestore,
+      `profissionais/${profissionalId}/agenda/${data}`
+    );
+
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    return snapshot.data();
+
+  }
 }

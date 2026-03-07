@@ -13,6 +13,9 @@ import { CategoriasService } from 'src/app/service/categoria.service';
 import { Categoria } from 'src/app/models/categoria.model';
 import { ServicosService } from 'src/app/service/servicos.service';
 import { Servico } from 'src/app/models/servico.model';
+import { AgendaService } from 'src/app/service/agenda.service';
+import { Agenda } from 'src/app/models/agenda.model';
+import { getDoc } from '@angular/fire/firestore';
 addIcons({
   'chevron-back-circle': chevronBackCircle,
   'chevron-forward-circle': chevronForwardCircle,
@@ -31,11 +34,11 @@ export class AgendaPage implements OnInit {
   categorias: Categoria[] = [];
   servicos: Servico[] = [];
   categoriaSelecionada = '';
-  servicosSelecionados = '';
+  servicosSelecionados: string = '';
   dias: any[] = [];
   diaSelecionado: string = '';
 
-  constructor(private categoriasService: CategoriasService, private servicosService: ServicosService) { }
+  constructor(private categoriasService: CategoriasService, private servicosService: ServicosService, private agendaService: AgendaService) { }
 
   async ngOnInit() {
     this.categorias = await this.categoriasService.listar();
@@ -123,9 +126,49 @@ export class AgendaPage implements OnInit {
     this.gerarSemana();
 
   }
+  /*
+    async selecionarDia(data: string) {
+
+      this.diaSelecionado = data;
+
+      if (this.servicosSelecionados && this.servicosSelecionados.length > 0) {
+        await this.buscarHorariosDisponiveis();
+      }
+
+    }*/
 
   selecionarDia(data: string) {
+
     this.diaSelecionado = data;
+
+    if (!this.servicosSelecionados.length) return;
+
+    const dataFormatada = data.split("T")[0];
+
+    console.log(this.servicosSelecionados);
+    console.log(dataFormatada)
+
+    this.agendaService.buscarHorariosDisponiveis(dataFormatada,
+      this.servicosSelecionados
+    ).then(resp => {
+      console.log(resp)
+      this.carregarProfissionais(resp).then(resp2 => {
+        console.log(this.profissionais)
+      })
+    })
+  }
+
+  async carregarProfissionais(agendas: Agenda[]) {
+
+    const promises = agendas.map(a => getDoc(a.profissional));
+
+    const snapshots = await Promise.all(promises);
+
+    this.profissionais = snapshots.map(s => ({
+      id: s.id,
+      ...s.data()
+    }));
+
   }
 
   mesAtual: string = '';
@@ -157,7 +200,29 @@ export class AgendaPage implements OnInit {
   }
 
 
+  horariosDisponiveis: any[] = [];
+
+  profissionais: any[] = [];
+  agendamentos: any[] = [];
+  horariosPadrao: string[] = [
+    '09:00', '09:30', '10:00', '10:30',
+    '11:00', '11:30', '14:00', '14:30',
+    '15:00', '15:30', '16:00'
+  ];
+
+  async buscarHorariosDisponiveis() {
+
+    if (!this.servicosSelecionados || this.servicosSelecionados.length === 0) {
+      return;
+    }
 
 
+    alert(this.diaSelecionado)
+
+
+
+
+
+  }
 
 }
