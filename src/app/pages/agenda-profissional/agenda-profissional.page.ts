@@ -20,6 +20,7 @@ import {
 
 import { AgendaService } from 'src/app/service/agenda.service';
 import { ProfissionalService } from 'src/app/service/profissional.service';
+import { ServicosService } from 'src/app/service/servicos.service';
 
 @Component({
   selector: 'app-agenda-profissional',
@@ -48,17 +49,20 @@ export class AgendaProfissionalPage implements OnInit {
   dataSelecionada = '';
   horarios: string[] = [];
   agenda: any[] = [];
-  servicos = ['corte', 'escova'];
   profissional: any = {};
+  servicosDisponiveis: any[] = [];
 
   constructor(
     private agendaService: AgendaService,
     private route: ActivatedRoute,
-    private profissionalService: ProfissionalService
+    private profissionalService: ProfissionalService,
+    private servicosService: ServicosService
   ) { }
 
   async ngOnInit() {
     const id = 'YP0y5FMaL3gjKsyPC0I7'; // depois trocar pela rota
+
+    this.servicosDisponiveis = await this.servicosService.listar();
 
     if (id) {
       const prof = await this.profissionalService.buscarPorId(id);
@@ -90,12 +94,8 @@ export class AgendaProfissionalPage implements OnInit {
   }
 
   async onDataChange(event: any) {
-    this.horarios = [];
-    this.agenda = [];
     const valor = event?.detail?.value;
-
     this.dataSelecionada = this.formatarData(valor);
-
     await this.carregarAgenda();
   }
 
@@ -110,6 +110,11 @@ export class AgendaProfissionalPage implements OnInit {
       return;
     }
 
+    if (!this.profissional?.servicos || this.profissional.servicos.length === 0) {
+      alert('Este profissional não possui serviços cadastrados');
+      return;
+    }
+
     for (const horario of this.horarios) {
       await this.agendaService.criarHorario({
         data: this.dataSelecionada,
@@ -118,7 +123,7 @@ export class AgendaProfissionalPage implements OnInit {
         profissionalId: this.profissional.id,
         profissionalNome: this.profissional.nome,
         profissionalFoto: this.profissional.foto,
-        servico: this.servicos
+        servicos: this.profissional.servicos
       });
     }
 
@@ -135,20 +140,18 @@ export class AgendaProfissionalPage implements OnInit {
       this.profissional.id,
       this.dataSelecionada
     );
+  }
 
-    console.log('data selecionada:', this.dataSelecionada);
-    console.log('agenda carregada:', this.agenda);
+  getNomeServico(id: string): string {
+    const servico = this.servicosDisponiveis.find(s => s.id === id);
+    return servico ? servico.descricao : '';
   }
 
   async removerHorarioCadastrado(h: any) {
-
     const confirmar = confirm('Deseja remover este horário?');
-
     if (!confirmar) return;
 
     await this.agendaService.excluirHorario(h.id);
-
-    this.carregarAgenda();
-
+    await this.carregarAgenda();
   }
 }

@@ -39,23 +39,21 @@
   </ion-list>
 
   <ion-list *ngIf="agenda.length > 0">
-
     <ion-item *ngFor="let h of agenda">
-
       <ion-label>
+        <h2>{{ h.horario }}</h2>
 
-        {{h.horario}}
-
+        <p>
+          <span *ngFor="let s of h.servicos; let last = last">
+            {{ getNomeServico(s) }}<span *ngIf="!last"> • </span>
+          </span>
+        </p>
       </ion-label>
 
       <ion-button fill="clear" color="danger" (click)="removerHorarioCadastrado(h)">
-
         Remover
-
       </ion-button>
-
     </ion-item>
-
   </ion-list>
 
   <ion-button expand="block" color="success" (click)="salvarAgenda()">
