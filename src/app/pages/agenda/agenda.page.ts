@@ -24,7 +24,6 @@ import {
   chevronForwardCircle,
   arrowBackOutline
 } from 'ionicons/icons';
-
 import { addIcons } from 'ionicons';
 
 import { CategoriasService } from 'src/app/service/categoria.service';
@@ -40,6 +39,16 @@ addIcons({
   'chevron-forward-circle': chevronForwardCircle,
   'arrow-back-outline': arrowBackOutline
 });
+
+type HorarioDisponivel = {
+  horario: string;
+  profissionais: {
+    agendaId: string;
+    id: string;
+    nome: string;
+    foto?: string;
+  }[];
+};
 
 @Component({
   selector: 'app-agenda',
@@ -66,25 +75,21 @@ addIcons({
   ]
 })
 export class AgendaPage implements OnInit {
-
   categorias: Categoria[] = [];
   servicos: Servico[] = [];
 
-  categoriaSelecionada = '';
-
-  servicosSelecionados: string[] = [];
+  agendasDoDia: Agenda[] = [];
+  horariosDisponiveis: HorarioDisponivel[] = [];
 
   dias: any[] = [];
-
-  diaSelecionado = '';
-
   inicioSemana: Date = new Date();
-
   mesAtual = '';
 
-  horariosDisponiveis: any[] = [];
-
+  diaSelecionado = '';
+  categoriaSelecionada = '';
+  servicosSelecionados: string[] = [];
   horarioSelecionado = '';
+  agendaSelecionadaId = '';
 
   constructor(
     private categoriasService: CategoriasService,
@@ -93,47 +98,24 @@ export class AgendaPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-
     this.categorias = await this.categoriasService.listar();
-
     this.gerarSemana();
-
-  }
-
-  selecionarCategoria(categoria: string) {
-
-    this.categoriaSelecionada = categoria;
-
-    this.servicosService.buscarPorCategoria(categoria)
-      .then(resp => {
-
-        this.servicos = resp.sort((a, b) =>
-          a.descricao.localeCompare(b.descricao)
-        );
-
-      });
-
   }
 
   gerarSemana() {
-
     this.dias = [];
 
     const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-
     const meses = [
       'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
     ];
 
     const dataReferencia = new Date(this.inicioSemana);
-
     this.mesAtual = meses[dataReferencia.getMonth()];
 
     for (let i = 0; i < 7; i++) {
-
       const data = new Date(this.inicioSemana);
-
       data.setDate(this.inicioSemana.getDate() + i);
 
       this.dias.push({
@@ -141,51 +123,65 @@ export class AgendaPage implements OnInit {
         numero: data.getDate(),
         data: data.toISOString()
       });
-
     }
-
   }
 
   proximaSemana() {
-
     this.inicioSemana.setDate(this.inicioSemana.getDate() + 7);
-
     this.gerarSemana();
-
   }
 
   semanaAnterior() {
-
     this.inicioSemana.setDate(this.inicioSemana.getDate() - 7);
-
     this.gerarSemana();
-
   }
 
   async selecionarDia(data: string) {
-
     this.diaSelecionado = data;
 
-    await this.buscarHorariosDisponiveis();
+    // limpa etapas seguintes
+    this.categoriaSelecionada = '';
+
+    this.horarioSelecionado = '';
+    this.servicos = [];
+    this.horariosDisponiveis = [];
+
+    const dataFormatada = data.split('T')[0];
+    this.agendasDoDia = await this.agendaService.buscarHorariosDisponiveis(dataFormatada);
+  }
+
+  async selecionarCategoria(categoriaId: string) {
+
+    this.categoriaSelecionada = categoriaId;
+
+    // limpar seleções anteriores
+    this.servicosSelecionados = [];
+    this.horarioSelecionado = '';
+    this.agendaSelecionadaId = '';
+    this.horariosDisponiveis = [];
+
+    const lista = await this.servicosService.buscarPorCategoria(categoriaId);
+
+    this.servicos = lista.sort((a, b) =>
+      (a.descricao || '').localeCompare(b.descricao || '')
+    );
 
   }
 
-  async buscarHorariosDisponiveis() {
+  selecionarServico() {
 
-    if (!this.servicosSelecionados.length || !this.diaSelecionado) return;
+    this.horariosDisponiveis = [];
+    this.horarioSelecionado = '';
 
-    const dataFormatada = this.diaSelecionado.split("T")[0];
-
-    const agendas: Agenda[] =
-      await this.agendaService.buscarHorariosDisponiveis(dataFormatada);
+    if (!this.servicosSelecionados.length || !this.agendasDoDia.length) return;
 
     const mapaHorarios = new Map<string, any>();
 
-    agendas.forEach(a => {
+    this.agendasDoDia.forEach(a => {
 
-      const servicos = a.servicos || [];
+      const servicosAgenda = a.servicos || [];
 
-      const possuiServico = servicos.some((s: string) =>
+      const possuiServico = servicosAgenda.some((s: string) =>
         this.servicosSelecionados.includes(s)
       );
 
@@ -201,6 +197,7 @@ export class AgendaPage implements OnInit {
       }
 
       mapaHorarios.get(a.horario).profissionais.push({
+        agendaId: a.id,
         id: a.profissionalId,
         nome: a.profissionalNome,
         foto: a.profissionalFoto
@@ -212,24 +209,29 @@ export class AgendaPage implements OnInit {
 
   }
 
-  selecionarHorario(horario: string) {
+  selecionarHorario(horario: string, agendaId: string) {
 
     this.horarioSelecionado = horario;
+    this.agendaSelecionadaId = agendaId;
 
   }
 
-  confirmarAgendamento() {
+  async confirmarAgendamento() {
+
+    if (!this.agendaSelecionadaId) return;
+
+    await this.agendaService.bloquearHorario(this.agendaSelecionadaId);
 
     const agendamento = {
       dia: this.diaSelecionado,
-      horario: this.horarioSelecionado,
-      servicos: this.servicosSelecionados
+      categoria: this.categoriaSelecionada,
+      servicos: this.servicosSelecionados,
+      horario: this.horarioSelecionado
     };
 
     console.log("Agendamento:", agendamento);
 
-    alert(`Agendado para ${this.diaSelecionado} às ${this.horarioSelecionado}`);
+    alert("Agendamento realizado com sucesso!");
 
   }
-
 }

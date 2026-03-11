@@ -209,26 +209,19 @@
 }
 
 /* container dos profissionais */
-.profissionais {
-  display: flex;
-  gap: 10px;
-  margin-top: 6px;
-  flex-wrap: wrap;
-}
-
-/* card do profissional */
 .profissional {
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-
-  background: #f7f7f7;
-  padding: 4px 8px;
-  border-radius: 20px;
-
-  font-size: 12px;
-  font-weight: 500;
+  gap: 8px;
+  padding: 6px;
 }
+
+.profissional.ativo {
+  background: #ffe5ea;
+  border-radius: 6px;
+}
+
 
 /* foto do profissional */
 .foto-profissional {
@@ -242,14 +235,10 @@
 }
 
 .horario {
-
-  border-radius: 12px;
-  padding: 12px;
   margin-bottom: 10px;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-
-  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
 }
 
 

@@ -179,5 +179,15 @@ export class AgendaService {
 
   }
 
+  async bloquearHorario(agendaId: string) {
+
+    const agendaDoc = doc(this.firestore, `agenda/${agendaId}`);
+
+    await updateDoc(agendaDoc, {
+      disponivel: false
+    });
+
+  }
+
 
 }
