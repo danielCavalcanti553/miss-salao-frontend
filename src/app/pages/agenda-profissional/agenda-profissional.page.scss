@@ -1,0 +1,44 @@
+.card-profissional {
+
+  margin: 20px;
+  border-radius: 16px;
+
+}
+
+.profissional-header {
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+}
+
+.avatar-profissional {
+
+  width: 70px;
+  height: 70px;
+
+}
+
+.avatar-profissional img {
+
+  border-radius: 50%;
+  object-fit: cover;
+
+}
+
+.profissional-info h2 {
+
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+
+}
+
+.profissional-info p {
+
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+
+}

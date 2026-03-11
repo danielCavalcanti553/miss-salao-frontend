@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profissionais</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-card>
+
+      <ion-card-content>
+
+        <ion-item>
+          <ion-input label="Nome" label-placement="floating" name="nome" [(ngModel)]="profissional.nome">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <input type="file" accept="image/*" (change)="onFileSelected($event)">
+          <div *ngIf="profissional.foto">
+
+            <img [src]="profissional.foto" style="width:120px;border-radius:12px;margin-top:10px">
+
+          </div>
+        </ion-item>
+
+
+
+        <ion-item>
+
+          <ion-select multiple label="Serviços" label-placement="floating" [(ngModel)]="profissional.servicos">
+
+            <ion-select-option *ngFor="let s of servicosDisponiveis" [value]="s">
+
+              {{s}}
+
+            </ion-select-option>
+
+          </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle [(ngModel)]="profissional.ativo">
+            Ativo
+          </ion-toggle>
+        </ion-item>
+
+        <ion-button expand="block" (click)="salvar()">
+
+          {{editando ? 'Atualizar':'Cadastrar'}}
+
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" (click)="cancelar()">
+
+          Cancelar
+
+        </ion-button>
+
+      </ion-card-content>
+
+    </ion-card>
+
+
+    <ion-card>
+
+      <ion-card-content>
+
+        <ion-list>
+
+          <ion-item *ngFor="let p of profissionais">
+
+            <ion-avatar slot="start">
+              <img [src]="p.foto">
+            </ion-avatar>
+
+            <ion-label>
+
+              <h2>{{p.nome}}</h2>
+
+              <p>{{p.servicos.join(' • ')}}</p>
+
+            </ion-label>
+
+            <ion-button fill="clear" color="warning" (click)="editar(p)">
+
+              Editar
+
+            </ion-button>
+
+            <ion-button fill="clear" color="danger" (click)="excluir(p)">
+
+              Excluir
+
+            </ion-button>
+
+          </ion-item>
+
+        </ion-list>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-grid>
+
+</ion-content>

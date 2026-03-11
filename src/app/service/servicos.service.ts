@@ -80,7 +80,9 @@ export class ServicosService {
   // CRIAR
   async criar(servico: Servico) {
 
-    return await addDoc(this.servicosRef, servico);
+    const ref = await addDoc(this.servicosRef, servico);
+
+    return ref.id;
 
   }
 

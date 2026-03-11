@@ -1,10 +1,23 @@
 export interface Servico {
-  id: string;
-  ativo: boolean;
-  categoria: string;
+
+  id?: string;
+
   descricao: string;
-  nome: string;
+
+  detalhe: string;
+
+  categoria: string;
+
   preco: number;
+
   duracaoMin: number;
-  imagem: string;
+
+  ativo: boolean;
+
+  imagem?: string;
+
+  ordem?: number;
+
+  comissaoPercentual?: number;
+
 }

@@ -15,7 +15,8 @@ import { ServicosService } from 'src/app/service/servicos.service';
 import { Servico } from 'src/app/models/servico.model';
 import { AgendaService } from 'src/app/service/agenda.service';
 import { Agenda } from 'src/app/models/agenda.model';
-import { getDoc } from '@angular/fire/firestore';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { Profissional } from 'src/app/models/profissional.model';
 addIcons({
   'chevron-back-circle': chevronBackCircle,
   'chevron-forward-circle': chevronForwardCircle,
@@ -37,6 +38,8 @@ export class AgendaPage implements OnInit {
   servicosSelecionados: string = '';
   dias: any[] = [];
   diaSelecionado: string = '';
+  agendaCompleta: any[] = [];
+
 
   constructor(private categoriasService: CategoriasService, private servicosService: ServicosService, private agendaService: AgendaService) { }
 
@@ -126,18 +129,9 @@ export class AgendaPage implements OnInit {
     this.gerarSemana();
 
   }
-  /*
-    async selecionarDia(data: string) {
 
-      this.diaSelecionado = data;
 
-      if (this.servicosSelecionados && this.servicosSelecionados.length > 0) {
-        await this.buscarHorariosDisponiveis();
-      }
-
-    }*/
-
-  selecionarDia(data: string) {
+  async selecionarDia(data: string) {
 
     this.diaSelecionado = data;
 
@@ -145,31 +139,40 @@ export class AgendaPage implements OnInit {
 
     const dataFormatada = data.split("T")[0];
 
-    console.log(this.servicosSelecionados);
-    console.log(dataFormatada)
+    const agendas: Agenda[] =
+      await this.agendaService.buscarHorariosDisponiveis(
+        dataFormatada,
+        this.servicosSelecionados
+      );
 
-    this.agendaService.buscarHorariosDisponiveis(dataFormatada,
-      this.servicosSelecionados
-    ).then(resp => {
-      console.log(resp)
-      this.carregarProfissionais(resp).then(resp2 => {
-        console.log(this.profissionais)
-      })
-    })
+    // agrupa horários
+    const mapaHorarios = new Map<string, any>();
+
+    agendas.forEach(a => {
+
+      if (!mapaHorarios.has(a.horario)) {
+
+        mapaHorarios.set(a.horario, {
+          horario: a.horario,
+          profissionais: []
+        });
+
+      }
+
+      mapaHorarios.get(a.horario).profissionais.push({
+        id: a.profissionalId,
+        nome: a.profissionalNome,
+        foto: a.profissionalFoto
+      });
+
+    });
+
+    this.horariosDisponiveis = Array.from(mapaHorarios.values());
+
+    console.log(this.horariosDisponiveis);
+
   }
 
-  async carregarProfissionais(agendas: Agenda[]) {
-
-    const promises = agendas.map(a => getDoc(a.profissional));
-
-    const snapshots = await Promise.all(promises);
-
-    this.profissionais = snapshots.map(s => ({
-      id: s.id,
-      ...s.data()
-    }));
-
-  }
 
   mesAtual: string = '';
 
@@ -202,7 +205,7 @@ export class AgendaPage implements OnInit {
 
   horariosDisponiveis: any[] = [];
 
-  profissionais: any[] = [];
+  profissionais: Profissional[] = [];
   agendamentos: any[] = [];
   horariosPadrao: string[] = [
     '09:00', '09:30', '10:00', '10:30',

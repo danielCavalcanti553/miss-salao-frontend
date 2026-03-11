@@ -29,7 +29,19 @@ export const routes: Routes = [
     path: 'agenda',
     canActivate: [AuthGuard],
     loadComponent: () => import('./pages/agenda/agenda.page').then(m => m.AgendaPage)
+  },  {
+    path: 'servico',
+    loadComponent: () => import('./pages/servico/servico.page').then( m => m.ServicoPage)
+  },
+  {
+    path: 'profissionais',
+    loadComponent: () => import('./pages/profissionais/profissionais.page').then( m => m.ProfissionaisPage)
+  },
+  {
+    path: 'agenda-profissional',
+    loadComponent: () => import('./pages/agenda-profissional/agenda-profissional.page').then( m => m.AgendaProfissionalPage)
   }
+
 
 
 ];

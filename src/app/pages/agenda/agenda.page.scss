@@ -27,7 +27,7 @@
 
 
 .categoria ion-img {
-  width: 75%;
+  width: 60%;
   margin-bottom: 6px;
 }
 
@@ -125,8 +125,8 @@
 }
 
 .dia {
-  min-width: 70px;
-  height: 70px;
+  min-width: 50px;
+  height: 50px;
 
   display: flex;
   flex-direction: column;
@@ -195,7 +195,7 @@
       #e7c39a,
       #d4a469);
 
-  color: white;
+
 }
 
 .btn-confirmar {
@@ -207,3 +207,94 @@
 
   border-radius: 18px;
 }
+
+/* container dos profissionais */
+.profissionais {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* card do profissional */
+.profissional {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: #f7f7f7;
+  padding: 4px 8px;
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* foto do profissional */
+.foto-profissional {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 2px solid #e7c6c6;
+}
+
+.horario {
+
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  cursor: pointer;
+}
+
+
+
+.hora {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+/*
+.dia {
+  min-width: 70px;
+  height: 70px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 14px;
+  background: #f6efe8;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+  cursor: pointer;
+}
+
+.semana {
+  font-size: 13px;
+  color: #8b6b4d;
+}
+
+.numero {
+  font-size: 20px;
+  font-weight: 600;
+  color: #8b6b4d;
+}
+
+.dia.ativo {
+  background: linear-gradient(135deg,
+      #e7c39a,
+      #d4a469);
+}
+
+.dia.ativo span {
+  color: white;
+}*/

@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agenda Profissional</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="card-profissional">
+    <ion-card-content class="profissional-header">
+      <ion-avatar>
+        <img [src]="profissional.foto">
+      </ion-avatar>
+
+      <div>
+        <h2>{{ profissional.nome }}</h2>
+        <p>Agenda de horários</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-item>
+    <ion-datetime presentation="date" [value]="dataSelecionada" (ionChange)="onDataChange($event)">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-button expand="block" (click)="gerarHorarios()">
+    Gerar horários
+  </ion-button>
+
+  <ion-list *ngIf="horarios.length > 0">
+    <ion-item *ngFor="let h of horarios">
+      <ion-label>{{ h }}</ion-label>
+
+      <ion-button fill="clear" color="danger" (click)="removerHorario(h)">
+        Remover
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="agenda.length > 0">
+
+    <ion-item *ngFor="let h of agenda">
+
+      <ion-label>
+
+        {{h.horario}}
+
+      </ion-label>
+
+      <ion-button fill="clear" color="danger" (click)="removerHorarioCadastrado(h)">
+
+        Remover
+
+      </ion-button>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-button expand="block" color="success" (click)="salvarAgenda()">
+    Salvar agenda
+  </ion-button>
+
+</ion-content>

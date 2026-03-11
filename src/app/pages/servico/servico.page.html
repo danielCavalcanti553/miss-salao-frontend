@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-title>Cadastro de Serviços</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <!-- FORM -->
+
+    <ion-card class="card-form">
+
+      <ion-card-content>
+
+        <ion-item>
+          <ion-input label="Descrição" label-placement="floating" [(ngModel)]="servico.descricao">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Detalhe" label-placement="floating" [(ngModel)]="servico.detalhe">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+
+          <ion-select label="Categoria" label-placement="floating" [(ngModel)]="servico.categoria">
+
+            <ion-select-option value="cabelos">
+              Cabelos
+            </ion-select-option>
+
+            <ion-select-option value="unhas">
+              Unhas
+            </ion-select-option>
+
+            <ion-select-option value="sobrancelha">
+              Sobrancelha
+            </ion-select-option>
+
+          </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="number" label="Preço" label-placement="floating" [(ngModel)]="servico.preco">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="number" label="Duração (min)" label-placement="floating" [(ngModel)]="servico.duracaoMin">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="number" label="Comissão (%)" label-placement="floating"
+            [(ngModel)]="servico.comissaoPercentual">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle [(ngModel)]="servico.ativo">
+            Ativo
+          </ion-toggle>
+        </ion-item>
+
+        <div class="botoes">
+
+          <!--  -->
+          <ion-button expand="block" color="primary" (click)="salvar()"
+            [disabled]="!servico.descricao || !servico.categoria || !servico.preco">
+
+
+            {{ editando ? 'Atualizar' : 'Cadastrar' }}
+
+          </ion-button>
+
+          <ion-button expand="block" fill="outline" (click)="cancelar()">
+            Cancelar
+          </ion-button>
+
+        </div>
+
+      </ion-card-content>
+
+    </ion-card>
+
+
+    <!-- LISTA -->
+
+    <ion-card class="card-lista">
+
+      <ion-card-content>
+
+        <ion-list>
+
+          <ion-item *ngFor="let s of servicos">
+
+            <ion-label>
+
+              <h2>{{ s.descricao }}</h2>
+
+              <p>
+
+                {{ s.detalhe }}
+
+                • R$ {{ s.preco }}
+
+                • {{ s.duracaoMin }} min
+
+              </p>
+
+            </ion-label>
+
+            <ion-button fill="clear" color="warning" (click)="editar(s)">
+
+              Editar
+
+            </ion-button>
+
+            <ion-button fill="clear" color="danger" (click)="excluir(s)">
+
+              Excluir
+
+            </ion-button>
+
+          </ion-item>
+
+        </ion-list>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-grid>
+
+</ion-content>

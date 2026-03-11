@@ -10,7 +10,8 @@ import {
   deleteDoc,
   query,
   where,
-  DocumentReference
+  DocumentReference,
+  orderBy
 } from '@angular/fire/firestore';
 
 import { Agenda } from '../models/agenda.model';
@@ -24,9 +25,6 @@ export class AgendaService {
 
   private agendaRef = collection(this.firestore, 'agenda');
 
-
-
-  // LISTAR TODAS
   async listar(): Promise<Agenda[]> {
 
     const snapshot = await getDocs(this.agendaRef);
@@ -38,9 +36,6 @@ export class AgendaService {
 
   }
 
-
-
-  // BUSCAR POR ID
   async buscarPorId(id: string): Promise<Agenda | null> {
 
     const docRef = doc(this.firestore, 'agenda', id);
@@ -56,9 +51,6 @@ export class AgendaService {
 
   }
 
-
-
-  // BUSCAR POR DATA
   async buscarPorData(data: string): Promise<Agenda[]> {
 
     const q = query(
@@ -75,9 +67,6 @@ export class AgendaService {
 
   }
 
-
-
-  // BUSCAR POR PROFISSIONAL
   async buscarPorProfissional(profissionalRef: DocumentReference): Promise<Agenda[]> {
 
     const q = query(
@@ -94,18 +83,12 @@ export class AgendaService {
 
   }
 
-
-
-  // CRIAR
   async criar(agenda: Agenda) {
 
     return await addDoc(this.agendaRef, agenda);
 
   }
 
-
-
-  // ATUALIZAR
   async atualizar(id: string, agenda: Partial<Agenda>) {
 
     const docRef = doc(this.firestore, 'agenda', id);
@@ -114,9 +97,6 @@ export class AgendaService {
 
   }
 
-
-
-  // ATUALIZAR HORÁRIO ESPECÍFICO
   async atualizarHorario(id: string, hora: string, status: 'livre' | 'ocupado') {
 
     const docRef = doc(this.firestore, 'agenda', id);
@@ -127,9 +107,6 @@ export class AgendaService {
 
   }
 
-
-
-  // EXCLUIR
   async excluir(id: string) {
 
     const docRef = doc(this.firestore, 'agenda', id);
@@ -154,5 +131,53 @@ export class AgendaService {
     })) as Agenda[];
 
   }
+
+  async buscarHorarios(data: string, servicos: string[]) {
+
+    const q = query(
+      collection(this.firestore, "agendas"),
+      where("data", "==", data),
+      where("disponivel", "==", true),
+      where("servicos", "array-contains-any", servicos)
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+  }
+
+  async criarHorario(agenda: any) {
+    return addDoc(this.agendaRef, agenda);
+  }
+
+  async buscarAgenda(profissionalId: string, data: string) {
+
+    const q = query(
+      this.agendaRef,
+      where('profissionalId', '==', profissionalId),
+      where('data', '==', data),
+      orderBy('horario')
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+  }
+
+  async excluirHorario(id: string) {
+
+    const docRef = doc(this.firestore, 'agenda', id);
+
+    await deleteDoc(docRef);
+
+  }
+
 
 }
