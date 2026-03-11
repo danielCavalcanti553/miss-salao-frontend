@@ -115,12 +115,12 @@ export class AgendaService {
 
   }
 
-  async buscarHorariosDisponiveis(data: string, servico: string): Promise<Agenda[]> {
+  async buscarHorariosDisponiveis(data: string): Promise<Agenda[]> {
 
     const q = query(
       this.agendaRef,
       where('data', '==', data),
-      where('servico', 'array-contains', servico)
+      where('disponivel', '==', true)
     );
 
     const snapshot = await getDocs(q);
