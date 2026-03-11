@@ -79,24 +79,27 @@
 
         <div class="horarios-container">
 
-          <div class="horario" *ngFor="let h of horariosDisponiveis" [class.ativo]="horarioSelecionado === h.horario">
+          <div class="horario" *ngFor="let h of horariosDisponiveis" [class.ativo]="horarioSelecionado === h.horario"
+            (click)="selecionarHorario(h)">
 
-            <div class="hora">
-              {{ h.horario }}
-            </div>
+            {{ h.horario }}
 
-            <div class="profissionais">
+          </div>
 
-              <div class="profissional" *ngFor="let p of h.profissionais"
-                (click)="selecionarHorario(h.horario, p.agendaId)">
+        </div>
 
-                <img *ngIf="p.foto" [src]="p.foto" class="foto-profissional" />
+        <div *ngIf="horarioSelecionado">
 
-                <span>
-                  {{ p.nome }}
-                </span>
+          <h3 class="titulo-horario">5. Escolha o profissional</h3>
 
-              </div>
+          <div class="profissionais-container">
+
+            <div class="profissional" *ngFor="let p of profissionaisDoHorario"
+              [class.ativo]="agendaSelecionadaId === p.agendaId" (click)="selecionarProfissional(p)">
+
+              <img *ngIf="p.foto" [src]="p.foto" class="foto-profissional" />
+
+              <span>{{ p.nome }}</span>
 
             </div>
 
@@ -104,7 +107,7 @@
 
         </div>
 
-        <ion-button expand="block" class="btn-confirmar" [disabled]="!horarioSelecionado"
+        <ion-button expand="block" class="btn-confirmar" [disabled]="!agendaSelecionadaId"
           (click)="confirmarAgendamento()">
           Confirmar Agendamento
         </ion-button>

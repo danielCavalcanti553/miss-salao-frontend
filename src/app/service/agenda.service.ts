@@ -189,5 +189,14 @@ export class AgendaService {
 
   }
 
+  async registrarAgendamento(agendamento: any) {
+
+    const agendamentosRef = collection(this.firestore, 'agendamentos');
+
+    const docRef = await addDoc(agendamentosRef, agendamento);
+
+    return docRef.id;
+
+  }
 
 }

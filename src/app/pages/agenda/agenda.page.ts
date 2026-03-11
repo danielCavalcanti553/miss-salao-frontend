@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Auth } from '@angular/fire/auth';
+import { getAuth } from 'firebase/auth';
 import {
   IonBackButton,
   IonButtons,
@@ -40,15 +41,19 @@ addIcons({
   'arrow-back-outline': arrowBackOutline
 });
 
+type ProfissionalDisponivel = {
+  agendaId: string;
+  id: string;
+  nome: string;
+  foto?: string;
+};
+
 type HorarioDisponivel = {
   horario: string;
-  profissionais: {
-    agendaId: string;
-    id: string;
-    nome: string;
-    foto?: string;
-  }[];
+  profissionais: ProfissionalDisponivel[];
 };
+
+
 
 @Component({
   selector: 'app-agenda',
@@ -91,10 +96,14 @@ export class AgendaPage implements OnInit {
   horarioSelecionado = '';
   agendaSelecionadaId = '';
 
+  profissionaisDoHorario: ProfissionalDisponivel[] = [];
+
+
   constructor(
     private categoriasService: CategoriasService,
     private servicosService: ServicosService,
-    private agendaService: AgendaService
+    private agendaService: AgendaService,
+    private auth: Auth
   ) { }
 
   async ngOnInit() {
@@ -171,11 +180,12 @@ export class AgendaPage implements OnInit {
   selecionarServico() {
 
     this.horariosDisponiveis = [];
+    this.profissionaisDoHorario = [];
     this.horarioSelecionado = '';
 
     if (!this.servicosSelecionados.length || !this.agendasDoDia.length) return;
 
-    const mapaHorarios = new Map<string, any>();
+    const mapaHorarios = new Map<string, HorarioDisponivel>();
 
     this.agendasDoDia.forEach(a => {
 
@@ -196,8 +206,8 @@ export class AgendaPage implements OnInit {
 
       }
 
-      mapaHorarios.get(a.horario).profissionais.push({
-        agendaId: a.id,
+      mapaHorarios.get(a.horario)!.profissionais.push({
+        agendaId: a.id!,
         id: a.profissionalId,
         nome: a.profissionalNome,
         foto: a.profissionalFoto
@@ -209,10 +219,19 @@ export class AgendaPage implements OnInit {
 
   }
 
-  selecionarHorario(horario: string, agendaId: string) {
+  selecionarHorario(h: HorarioDisponivel) {
 
-    this.horarioSelecionado = horario;
-    this.agendaSelecionadaId = agendaId;
+    this.horarioSelecionado = h.horario;
+
+    this.profissionaisDoHorario = h.profissionais;
+
+    this.agendaSelecionadaId = '';
+
+  }
+
+  selecionarProfissional(p: ProfissionalDisponivel) {
+
+    this.agendaSelecionadaId = p.agendaId;
 
   }
 
@@ -220,18 +239,49 @@ export class AgendaPage implements OnInit {
 
     if (!this.agendaSelecionadaId) return;
 
-    await this.agendaService.bloquearHorario(this.agendaSelecionadaId);
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      alert("Usuário não autenticado");
+      return;
+    }
+
+    const profissional = this.profissionaisDoHorario.find(
+      p => p.agendaId === this.agendaSelecionadaId
+    );
 
     const agendamento = {
-      dia: this.diaSelecionado,
-      categoria: this.categoriaSelecionada,
+
+      usuarioId: user.uid,
+      usuarioEmail: user.email,
+
+      data: this.diaSelecionado,
+      horario: this.horarioSelecionado,
+
+      profissionalId: profissional?.id,
+      profissionalNome: profissional?.nome,
+
       servicos: this.servicosSelecionados,
-      horario: this.horarioSelecionado
+
+      dataCriacao: new Date()
+
     };
 
-    console.log("Agendamento:", agendamento);
+    try {
 
-    alert("Agendamento realizado com sucesso!");
+      await this.agendaService.registrarAgendamento(agendamento);
+
+      await this.agendaService.bloquearHorario(this.agendaSelecionadaId);
+
+      alert("Agendamento realizado com sucesso!");
+
+    } catch (e) {
+
+      console.error(e);
+
+      alert("Erro ao realizar agendamento");
+
+    }
 
   }
 }
