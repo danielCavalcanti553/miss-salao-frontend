@@ -33,7 +33,7 @@ export class ServicosService {
     const q = query(
       this.servicosRef,
       where('ativo', '==', true),
-      orderBy('ordem')
+      orderBy('descricao')
     );
 
     const snapshot = await getDocs(q);

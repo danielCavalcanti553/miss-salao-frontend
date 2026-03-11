@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+
 import {
   IonContent,
   IonHeader,
@@ -21,9 +22,9 @@ import {
   IonAvatar
 } from '@ionic/angular/standalone';
 
-
 import { Profissional } from '../../models/profissional.model';
 import { ProfissionalService } from 'src/app/service/profissional.service';
+import { ServicosService } from 'src/app/service/servicos.service';
 
 @Component({
   selector: 'app-profissionais',
@@ -61,16 +62,17 @@ export class ProfissionaisPage implements OnInit {
 
   fotoSelecionada?: File;
 
-  servicosDisponiveis = [
-    'escova',
-    'prancha',
-    'manicure',
-    'sobrancelha'
-  ];
+  servicosDisponiveis: any[] = [];
 
-  constructor(private service: ProfissionalService, private storage: Storage) { }
+  constructor(
+    private service: ProfissionalService,
+    private storage: Storage,
+    private servicosService: ServicosService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    this.servicosDisponiveis = await this.servicosService.listar();
 
     this.carregar();
 
@@ -131,6 +133,7 @@ export class ProfissionaisPage implements OnInit {
   editar(p: Profissional) {
 
     this.profissional = { ...p };
+
     this.editando = true;
 
   }
@@ -152,6 +155,7 @@ export class ProfissionaisPage implements OnInit {
   cancelar() {
 
     this.profissional = this.novo();
+
     this.editando = false;
 
   }
@@ -159,7 +163,9 @@ export class ProfissionaisPage implements OnInit {
   onFileSelected(event: any) {
 
     const file = event.target.files[0];
+
     if (!file) return;
+
     this.fotoSelecionada = file;
 
   }
@@ -167,12 +173,24 @@ export class ProfissionaisPage implements OnInit {
   async uploadFoto(): Promise<string | null> {
 
     if (!this.fotoSelecionada) return null;
+
     const caminho = `profissionais/${Date.now()}_${this.fotoSelecionada.name}`;
+
     const referencia = ref(this.storage, caminho);
+
     await uploadBytes(referencia, this.fotoSelecionada);
+
     const url = await getDownloadURL(referencia);
 
     return url;
+
+  }
+
+  getNomeServico(id: string) {
+
+    const serv = this.servicosDisponiveis.find(s => s.id === id);
+
+    return serv ? serv.descricao : '';
 
   }
 

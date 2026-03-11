@@ -1,13 +1,13 @@
 export interface Profissional {
 
-  id?: string;
+  id?: string
 
-  nome: string;
+  nome: string
 
-  foto: string;
+  foto: string
 
-  ativo: boolean;
+  ativo: boolean
 
-  servicos: string[];
+  servicos: string[]
 
 }

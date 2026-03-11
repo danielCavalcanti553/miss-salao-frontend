@@ -18,23 +18,24 @@
         </ion-item>
 
         <ion-item>
+
           <input type="file" accept="image/*" (change)="onFileSelected($event)">
-          <div *ngIf="profissional.foto">
 
-            <img [src]="profissional.foto" style="width:120px;border-radius:12px;margin-top:10px">
-
-          </div>
         </ion-item>
 
+        <div *ngIf="profissional.foto" style="padding:10px">
 
+          <img [src]="profissional.foto" style="width:120px;border-radius:12px">
+
+        </div>
 
         <ion-item>
 
-          <ion-select multiple label="Serviços" label-placement="floating" [(ngModel)]="profissional.servicos">
+          <ion-select multiple="true" label="Serviços" label-placement="floating" [(ngModel)]="profissional.servicos">
 
-            <ion-select-option *ngFor="let s of servicosDisponiveis" [value]="s">
+            <ion-select-option *ngFor="let s of servicosDisponiveis" [value]="s.id">
 
-              {{s}}
+              {{s.descricao}}
 
             </ion-select-option>
 
@@ -50,7 +51,7 @@
 
         <ion-button expand="block" (click)="salvar()">
 
-          {{editando ? 'Atualizar':'Cadastrar'}}
+          {{editando ? 'Atualizar' : 'Cadastrar'}}
 
         </ion-button>
 
@@ -74,14 +75,24 @@
           <ion-item *ngFor="let p of profissionais">
 
             <ion-avatar slot="start">
+
               <img [src]="p.foto">
+
             </ion-avatar>
 
             <ion-label>
 
               <h2>{{p.nome}}</h2>
 
-              <p>{{p.servicos.join(' • ')}}</p>
+              <p>
+
+                <span *ngFor="let s of p.servicos; let last = last">
+
+                  {{getNomeServico(s)}}<span *ngIf="!last"> • </span>
+
+                </span>
+
+              </p>
 
             </ion-label>
 
