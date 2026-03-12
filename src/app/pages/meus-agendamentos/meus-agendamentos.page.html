@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Meus Agendamentos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card *ngFor="let a of agendamentos">
+
+    <ion-card-content>
+
+      <h2>
+        📅 {{ formatarData(a.data) }}
+      </h2>
+
+      <p>
+        ⏰ {{a.horario}}
+      </p>
+
+      <p>
+        👩 Profissional:
+        <b>{{a.profissionalNome}}</b>
+      </p>
+
+      <p>
+        ✂ Serviços
+      </p>
+
+      <ul>
+
+        <li *ngFor="let s of a.servicos">
+          {{ getNomeServico(s) }}
+        </li>
+
+      </ul>
+
+      <p>
+        Status:
+        <b [ngClass]="{
+          'status-agendado': a.status === 'AGENDADO',
+          'status-cancelado': a.status === 'CANCELADO',
+          'status-concluido': a.status === 'CONCLUIDO'
+        }">
+          {{a.status}}
+        </b>
+      </p>
+
+
+      <ion-button *ngIf="a.status === 'AGENDADO'" color="danger" expand="block" (click)="cancelar(a)">
+        Cancelar Agendamento
+      </ion-button>
+
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>

@@ -40,6 +40,10 @@ export const routes: Routes = [
   {
     path: 'agenda-profissional',
     loadComponent: () => import('./pages/agenda-profissional/agenda-profissional.page').then( m => m.AgendaProfissionalPage)
+  },
+  {
+    path: 'meus-agendamentos',
+    loadComponent: () => import('./pages/meus-agendamentos/meus-agendamentos.page').then( m => m.MeusAgendamentosPage)
   }
 
 

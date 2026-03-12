@@ -193,9 +193,53 @@ export class AgendaService {
 
     const agendamentosRef = collection(this.firestore, 'agendamentos');
 
-    const docRef = await addDoc(agendamentosRef, agendamento);
+    const docRef = await addDoc(agendamentosRef, {
+      ...agendamento,
+      status: "AGENDADO",
+      dataCriacao: new Date()
+    });
 
     return docRef.id;
+
+  }
+
+  agendamentosRef = collection(this.firestore, 'agendamentos');
+
+  // BUSCAR AGENDAMENTOS DO CLIENTE
+  async buscarMeusAgendamentos(usuarioId: string) {
+
+    const q = query(
+      this.agendamentosRef,
+      where('usuarioId', '==', usuarioId),
+      orderBy('data', 'asc')
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+  }
+
+  async cancelarAgendamento(agendamentoId: string) {
+
+    const agendamentoDoc = doc(this.firestore, 'agendamentos', agendamentoId);
+
+    await updateDoc(agendamentoDoc, {
+      status: "CANCELADO"
+    });
+
+  }
+
+  async liberarHorario(agendaId: string) {
+
+    const agendaDoc = doc(this.firestore, 'agenda', agendaId);
+
+    await updateDoc(agendaDoc, {
+      disponivel: true
+    });
 
   }
 
