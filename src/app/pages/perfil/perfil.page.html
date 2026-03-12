@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Meu Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div style="text-align:center;margin-bottom:20px">
+
+    <ion-avatar style="margin:auto;width:110px;height:110px">
+      <img [src]="foto || 'assets/avatar.png'">
+    </ion-avatar>
+
+    <br>
+
+    <input type="file" (change)="selecionarFoto($event)">
+
+  </div>
+
+  <ion-item>
+    <ion-input label="Nome" labelPlacement="stacked" [(ngModel)]="nome">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input label="Telefone" labelPlacement="stacked" [(ngModel)]="telefone">
+    </ion-input>
+  </ion-item>
+
+
+
+
+
+  <ion-item>
+    <ion-input label="E-mail" type="email" labelPlacement="floating" placeholder="Enter text"></ion-input>
+  </ion-item>
+
+  <br>
+
+  <ion-button expand="block" (click)="salvar()">
+    Salvar
+  </ion-button>
+
+</ion-content>

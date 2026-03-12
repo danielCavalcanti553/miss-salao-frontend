@@ -44,6 +44,10 @@ export const routes: Routes = [
   {
     path: 'meus-agendamentos',
     loadComponent: () => import('./pages/meus-agendamentos/meus-agendamentos.page').then( m => m.MeusAgendamentosPage)
+  },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./pages/perfil/perfil.page').then( m => m.PerfilPage)
   }
 
 

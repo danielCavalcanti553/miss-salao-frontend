@@ -211,7 +211,7 @@ export class AgendaService {
     const q = query(
       this.agendamentosRef,
       where('usuarioId', '==', usuarioId),
-      orderBy('data', 'asc')
+      orderBy('data', 'desc')
     );
 
     const snapshot = await getDocs(q);

@@ -1,44 +1,46 @@
 <ion-app>
 
   <!-- MENU LATERAL -->
-  <ion-menu contentId="main-content" side="start" *ngIf="(auth.user$ | async) as user">
+  <ion-menu contentId="main-content" side="start">
 
-    <ion-header>
-      <ion-toolbar>
-        <div class="profile-img">
-          <ion-img src="/assets/people/pro1.png"></ion-img>
-        </div>
-      </ion-toolbar>
-    </ion-header>
+    <ng-container *ngIf="(auth.user$ | async) as user">
 
-    <ion-content>
-      <ion-list>
-        <ion-menu-toggle auto-hide="false">
-          <ion-item routerLink="/home">
-            <ion-icon name="home-outline" slot="start"></ion-icon>
-            <ion-label>Início</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
+      <ion-header>
+        <ion-toolbar>
+          <div class="profile-img">
+            <ion-img src="/assets/people/pro1.png"></ion-img>
+          </div>
+        </ion-toolbar>
+      </ion-header>
 
-        <ion-menu-toggle auto-hide="false">
-          <ion-item routerLink="/perfil">
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-label>Perfil</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
+      <ion-content>
+        <ion-list>
 
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/home">
+              <ion-icon name="home-outline" slot="start"></ion-icon>
+              <ion-label>Início</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/perfil">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-label>Perfil</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
-        <ion-menu-toggle auto-hide="false">
-          <ion-item (click)="logoff()">
-            <ion-icon name="settings-outline" slot="start"></ion-icon>
-            <ion-label>Sair</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="logoff()">
+              <ion-icon name="settings-outline" slot="start"></ion-icon>
+              <ion-label>Sair</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
-      </ion-list>
+        </ion-list>
+      </ion-content>
 
-    </ion-content>
+    </ng-container>
 
   </ion-menu>
 

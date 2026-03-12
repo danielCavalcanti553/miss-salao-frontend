@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '@angular/fire/auth';
-import { getAuth } from 'firebase/auth';
 import {
   IonBackButton,
   IonButtons,
@@ -53,8 +52,6 @@ type HorarioDisponivel = {
   profissionais: ProfissionalDisponivel[];
 };
 
-
-
 @Component({
   selector: 'app-agenda',
   templateUrl: './agenda.page.html',
@@ -80,6 +77,7 @@ type HorarioDisponivel = {
   ]
 })
 export class AgendaPage implements OnInit {
+
   categorias: Categoria[] = [];
   servicos: Servico[] = [];
 
@@ -98,7 +96,6 @@ export class AgendaPage implements OnInit {
 
   profissionaisDoHorario: ProfissionalDisponivel[] = [];
 
-
   constructor(
     private categoriasService: CategoriasService,
     private servicosService: ServicosService,
@@ -112,19 +109,24 @@ export class AgendaPage implements OnInit {
   }
 
   gerarSemana() {
+
     this.dias = [];
 
     const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
     const meses = [
       'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
     ];
 
     const dataReferencia = new Date(this.inicioSemana);
+
     this.mesAtual = meses[dataReferencia.getMonth()];
 
     for (let i = 0; i < 7; i++) {
+
       const data = new Date(this.inicioSemana);
+
       data.setDate(this.inicioSemana.getDate() + i);
 
       this.dias.push({
@@ -132,7 +134,9 @@ export class AgendaPage implements OnInit {
         numero: data.getDate(),
         data: data.toISOString()
       });
+
     }
+
   }
 
   proximaSemana() {
@@ -146,30 +150,32 @@ export class AgendaPage implements OnInit {
   }
 
   async selecionarDia(data: string) {
+
     this.diaSelecionado = data;
 
-    // limpa etapas seguintes
     this.categoriaSelecionada = '';
-
     this.horarioSelecionado = '';
     this.servicos = [];
     this.horariosDisponiveis = [];
 
     const dataFormatada = data.split('T')[0];
-    this.agendasDoDia = await this.agendaService.buscarHorariosDisponiveis(dataFormatada);
+
+    this.agendasDoDia =
+      await this.agendaService.buscarHorariosDisponiveis(dataFormatada);
+
   }
 
   async selecionarCategoria(categoriaId: string) {
 
     this.categoriaSelecionada = categoriaId;
 
-    // limpar seleções anteriores
     this.servicosSelecionados = [];
     this.horarioSelecionado = '';
     this.agendaSelecionadaId = '';
     this.horariosDisponiveis = [];
 
-    const lista = await this.servicosService.buscarPorCategoria(categoriaId);
+    const lista =
+      await this.servicosService.buscarPorCategoria(categoriaId);
 
     this.servicos = lista.sort((a, b) =>
       (a.descricao || '').localeCompare(b.descricao || '')
@@ -188,6 +194,9 @@ export class AgendaPage implements OnInit {
     const mapaHorarios = new Map<string, HorarioDisponivel>();
 
     this.agendasDoDia.forEach(a => {
+
+      // IGNORA HORÁRIOS OCUPADOS
+      if (a.disponivel === false) return;
 
       const servicosAgenda = a.servicos || [];
 
@@ -252,6 +261,8 @@ export class AgendaPage implements OnInit {
 
     const agendamento = {
 
+      agendaId: this.agendaSelecionadaId,
+
       usuarioId: user.uid,
       usuarioEmail: user.email,
 
@@ -263,6 +274,7 @@ export class AgendaPage implements OnInit {
 
       servicos: this.servicosSelecionados,
 
+      status: "AGENDADO",
       dataCriacao: new Date()
 
     };
@@ -275,6 +287,9 @@ export class AgendaPage implements OnInit {
 
       alert("Agendamento realizado com sucesso!");
 
+      // RECARREGA AGENDA
+      await this.selecionarDia(this.diaSelecionado);
+
     } catch (e) {
 
       console.error(e);
@@ -284,4 +299,5 @@ export class AgendaPage implements OnInit {
     }
 
   }
+
 }

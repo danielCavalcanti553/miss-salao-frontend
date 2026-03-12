@@ -42,11 +42,7 @@ export class MeusAgendamentosPage implements OnInit {
     private servicosService: ServicosService
   ) { }
 
-
-
   async ngOnInit() {
-
-    // carregar nomes dos serviços
     const listaServicos = await this.servicosService.listar();
 
     listaServicos.forEach((s: any) => {
@@ -54,20 +50,13 @@ export class MeusAgendamentosPage implements OnInit {
     });
 
     authState(this.auth).subscribe(async user => {
-
       if (!user) return;
 
-      this.agendamentos =
-        await this.agendaService.buscarMeusAgendamentos(user.uid);
-
+      this.agendamentos = await this.agendaService.buscarMeusAgendamentos(user.uid);
     });
-
   }
 
-
-
   formatarData(data: string) {
-
     const d = new Date(data);
 
     return d.toLocaleDateString('pt-BR', {
@@ -75,44 +64,31 @@ export class MeusAgendamentosPage implements OnInit {
       month: '2-digit',
       year: 'numeric'
     });
-
   }
-
-
 
   getNomeServico(id: string) {
     return this.mapaServicos[id] || id;
   }
 
-
-
   async cancelar(a: any) {
-
-    const confirmar = confirm(
-      "Deseja cancelar este agendamento?"
-    );
-
+    const confirmar = confirm('Deseja cancelar este agendamento?');
     if (!confirmar) return;
 
     try {
-
       await this.agendaService.cancelarAgendamento(a.id);
 
       if (a.agendaId) {
         await this.agendaService.liberarHorario(a.agendaId);
       }
 
-      a.status = "CANCELADO";
+      a.status = 'CANCELADO';
 
-      alert("Agendamento cancelado");
+      this.agendamentos = [...this.agendamentos];
 
+      alert('Agendamento cancelado');
     } catch (e) {
-
       console.error(e);
-      alert("Erro ao cancelar");
-
+      alert('Erro ao cancelar');
     }
-
   }
-
 }
