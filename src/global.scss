@@ -52,38 +52,15 @@ ion-toolbar {
 
 
 ion-back-button {
-  margin-left: 20px;
   --color: #7a4e3a;
   --icon-font-size: 28px;
+  margin-left: 10px;
 }
 
 ion-content {
-
   --background: #FEFAF8;
 }
 
-/* iOS: o traço geralmente vem daqui */
-.header-ios ion-toolbar:last-of-type {
-  --border-width: 0 !important;
-}
-
-/* MD: o traço geralmente é um pseudo-elemento ::after */
-.header-md::after {
-  background-image: none !important;
-  height: 0 !important;
-}
-
-/* Alguns temas colocam hairline no próprio header */
-ion-header::after {
-  display: none !important;
-}
-
-
-
-.app-header {
-  position: relative;
-  margin-top: 10px;
-}
 
 .btn-principal-home {
   top: 50px;

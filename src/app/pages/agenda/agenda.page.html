@@ -1,30 +1,33 @@
 <ion-header>
-  <ion-toolbar class="toolbar-agenda">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button default-href="/home" text="" icon="arrow-back-outline">
       </ion-back-button>
     </ion-buttons>
+    <ion-title>AGENDAR HORÁRIO</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-grid style="background-color: #c69243; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
 
     <!-- 1. DIA -->
     <ion-row>
       <ion-col>
-        <h3 class="titulo-horario">1. Selecione o dia</h3>
+
 
         <div class="agenda-header">
           <button type="button" (click)="semanaAnterior()">
             <ion-icon name="chevron-back-circle"></ion-icon>
           </button>
-
           <span class="titulo">{{ mesAtual }}</span>
+
+
 
           <button type="button" (click)="proximaSemana()">
             <ion-icon name="chevron-forward-circle"></ion-icon>
           </button>
+
         </div>
 
         <div class="dias-container">
@@ -37,11 +40,12 @@
         </div>
       </ion-col>
     </ion-row>
-
+  </ion-grid>
+  <ion-grid>
     <!-- 2. CATEGORIA -->
     <ion-row *ngIf="diaSelecionado">
       <ion-col>
-        <h3 class="titulo-horario">2. Selecione a categoria</h3>
+
 
         <div class="categorias">
           <div *ngFor="let c of categorias" class="categoria" [class.ativo]="categoriaSelecionada === c.idCategoria"
@@ -54,29 +58,36 @@
       </ion-col>
     </ion-row>
 
-    <!-- 3. SERVIÇO -->
-    <ion-row *ngIf="categoriaSelecionada">
+
+    <ion-row *ngIf="categoriaSelecionada"
+      style="margin-left: 10px; margin-right: 10px; background-color: #fff; margin-bottom: 0px;">
       <ion-col>
-        <h3 class="titulo-horario">3. Selecione o serviço</h3>
 
-        <ion-item>
-          <ion-select multiple="true" placeholder="Escolha os serviços" [(ngModel)]="servicosSelecionados"
-            (ionChange)="selecionarServico()">
+        <ion-select multiple="true" label="Serviços Selecionados" label-placement="floating"
+          [(ngModel)]="servicosSelecionados" (ionChange)="selecionarServico()" class="background-color: #fff">
+          <ion-select-option *ngFor="let s of servicos" [value]="s.id">
+            {{ s.descricao }}
+          </ion-select-option>
+        </ion-select>
 
-            <ion-select-option *ngFor="let s of servicos" [value]="s.id">
-              {{ s.descricao }}
-            </ion-select-option>
 
-          </ion-select>
-        </ion-item>
+
       </ion-col>
     </ion-row>
 
-    <!-- 4. HORÁRIO -->
-    <ion-row *ngIf="servicosSelecionados.length">
-      <ion-col>
-        <h3 class="titulo-horario">4. Selecione o horário</h3>
+  </ion-grid>
 
+  <!-- 4. HORÁRIO -->
+
+  <div *ngIf="servicosSelecionados.length">
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> </ion-card-title>
+        <ion-card-subtitle>Horários Disponíveis</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
         <div class="horarios-container">
 
           <div class="horario" *ngFor="let h of horariosDisponiveis" [class.ativo]="horarioSelecionado === h.horario"
@@ -90,7 +101,7 @@
 
         <div *ngIf="horarioSelecionado">
 
-          <h3 class="titulo-horario">5. Escolha o profissional</h3>
+          <h3 class="titulo-horario">PROFISSIONAL</h3>
 
           <div class="profissionais-container">
 
@@ -106,13 +117,12 @@
           </div>
 
         </div>
+      </ion-card-content>
+    </ion-card>
 
-        <ion-button expand="block" class="btn-confirmar" [disabled]="!agendaSelecionadaId"
-          (click)="confirmarAgendamento()">
-          Confirmar Agendamento
-        </ion-button>
-      </ion-col>
-    </ion-row>
+    <ion-button expand="block" class="btn-confirmar" [disabled]="!agendaSelecionadaId" (click)="confirmarAgendamento()">
+      Confirmar Agendamento
+    </ion-button>
+  </div>
 
-  </ion-grid>
 </ion-content>

@@ -7,7 +7,7 @@
 
 .categoria {
   width: 110px;
-  height: 90px;
+
 
   display: flex;
   flex-direction: column;
@@ -15,64 +15,65 @@
   align-items: center;
 
   background: #f6efe8;
-  border-radius: 16px;
+
 
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 
   cursor: pointer;
   transition: 0.2s;
-
+  opacity: 0.3;
 
 }
 
 
 .categoria ion-img {
-  width: 60%;
+  width: 95%;
   margin-bottom: 6px;
+  border-radius: 20px;
 }
 
 .categoria span {
-  font-size: 12px;
-  color: #7a5c3c;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+
 }
 
 /* selecionado */
 
 .categoria.ativo {
-  background: linear-gradient(135deg,
-      #e7c39a,
-      #d4a469);
 
-  color: white;
+  opacity: 1;
+  color: rgb(0, 0, 0);
 }
 
 .categoria.ativo span {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
+
+
 .dias-container {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  gap: 4px;
+  margin-top: 10px;
 }
 
 .dia {
-  min-width: 70px;
-  height: 70px;
+  height: 55px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  border-radius: 14px;
+  border-radius: 8px;
   background: #f6efe8;
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .semana {
@@ -102,61 +103,63 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .agenda-header button {
   background: none;
   border: none;
   font-size: 22px;
-  color: #c79a63;
+  color: #fff;
 }
 
 .titulo {
-  font-weight: 600;
-  color: #8b6b4d;
+
+  color: #fff;
+  font-size: 24px;
 }
 
-.dias-container {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 30px;
+
+
+/* card do dia */
+
+
+/* hover */
+
+.dia:hover {
+  transform: translateY(-2px);
 }
 
-.dia {
-  min-width: 50px;
-  height: 50px;
+/* dia atual */
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 14px;
-  background: #f6efe8;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-
-  cursor: pointer;
+.dia.hoje {
+  border: 2px solid #d4a469;
 }
 
-.semana {
-  font-size: 13px;
-  color: #8b6b4d;
-}
-
-.numero {
-  font-size: 20px;
-  font-weight: 600;
-  color: #8b6b4d;
-}
+/* dia selecionado */
 
 .dia.ativo {
   background: linear-gradient(135deg,
       #e7c39a,
       #d4a469);
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
+
+/* texto */
+
+.semana {
+  font-size: 11px;
+  color: #8b6b4d;
+}
+
+.numero {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8b6b4d;
+}
+
+/* texto ativo */
 
 .dia.ativo span {
   color: white;
@@ -164,9 +167,9 @@
 
 .titulo-horario {
   margin-top: 20px;
-  font-weight: 600;
+
   color: #8b6b4d;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .horarios-container {

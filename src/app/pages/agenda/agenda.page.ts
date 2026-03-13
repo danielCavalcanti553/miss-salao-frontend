@@ -16,7 +16,13 @@ import {
   IonSelectOption,
   IonGrid,
   IonRow,
-  IonCol
+  IonCol,
+  IonTitle,
+  IonCard,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardHeader,
+  IonCardContent
 } from '@ionic/angular/standalone';
 
 import {
@@ -73,7 +79,13 @@ type HorarioDisponivel = {
     IonRow,
     IonCol,
     CommonModule,
-    FormsModule
+    FormsModule,
+    IonTitle,
+    IonCard,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardHeader,
+    IonCardContent
   ]
 })
 export class AgendaPage implements OnInit {

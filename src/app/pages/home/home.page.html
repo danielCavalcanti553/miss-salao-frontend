@@ -1,36 +1,48 @@
-<!--
-<ion-header class="app-header" translucent="true">
-  <ion-toolbar>
+<ion-header translucent="true">
+  <ion-toolbar class="toolbar-home" color="primary">
 
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
 
 
+    <div class="user-info">
+
+      <ion-avatar style="margin-left: 5px;">
+        <img [src]="fotoUsuario || 'assets/avatar.png'">
+      </ion-avatar>
+
+      <div>Olá, {{ nomeUsuario }} <span>Que bom ter você aqui</span></div>
+      <div></div>
+
+    </div>
+
+
+    <!--
     <div class="logo-container">
       <img src="assets/logo-miss.png" alt="Clube da Miss" />
-    </div>
+    </div>-->
 
   </ion-toolbar>
 </ion-header>
--->
-<ion-content [fullscreen]="true">
 
+<ion-content [fullscreen]="true">
+  <!--
   <div class="app-header" translucent="true">
 
-    <!-- Botão Menu Lateral -->
+
     <ion-buttons slot="start" class="btn-principal-home">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
 
-    <!-- Logo Central -->
+
     <div class="logo-container">
       <img src="assets/logo-miss.png" alt="Clube da Miss" />
     </div>
 
 
   </div>
-
+ -->
   <ion-grid>
 
     <ion-row class="banner-princial">

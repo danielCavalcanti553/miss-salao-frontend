@@ -19,11 +19,26 @@
   margin: 0px;
 }
 
-.banner-princial {}
+.toolbar-home {
+  padding: 20px;
+  padding-left: 0px;
+}
 
-.titulo-servicos {}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-.principal-agendar {}
+.user-info ion-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.user-info span {
+  display: block;
+  font-size: 12px;
+}
 
 .title-agendar {
   padding: 22px;

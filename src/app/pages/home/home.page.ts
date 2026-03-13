@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+import { Auth } from '@angular/fire/auth';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+
 import {
   sparklesOutline,
   brushOutline,
@@ -12,7 +14,9 @@ import {
   calendarOutline,
   star
 } from 'ionicons/icons';
+
 import { addIcons } from 'ionicons';
+
 addIcons({
   'sparkles-outline': sparklesOutline,
   'brush-outline': brushOutline,
@@ -20,8 +24,8 @@ addIcons({
   'leaf-outline': leafOutline,
   'calendar-outline': calendarOutline,
   'star': star
-
 });
+
 import {
   IonTabs,
   IonTabBar,
@@ -45,9 +49,9 @@ import {
   IonCol,
   IonGrid,
   IonRow,
-  IonImg
+  IonImg,
+  IonAvatar
 } from '@ionic/angular/standalone';
-
 
 @Component({
   selector: 'app-home',
@@ -78,18 +82,45 @@ import {
     IonCol,
     IonGrid,
     IonRow,
-    IonImg
+    IonImg,
+    IonAvatar
   ]
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  constructor(public auth: AuthService,
-    private router: Router) { }
-  teste() {
-    alert('ok')
+  fotoUsuario = '';
+  nomeUsuario = '';
+
+  constructor(
+    public auth: AuthService,
+    private router: Router,
+    private firebaseAuth: Auth,
+    private firestore: Firestore
+  ) { }
+
+  async ngOnInit() {
+
+    const user = this.firebaseAuth.currentUser;
+
+    if (!user) return;
+
+    const refDoc = doc(this.firestore, 'usuarios', user.uid);
+
+    const snap = await getDoc(refDoc);
+
+    if (snap.exists()) {
+
+      const dados: any = snap.data();
+
+      this.fotoUsuario = dados.foto || '';
+      this.nomeUsuario = dados.nome || '';
+
+    }
+
   }
 
-
-
+  teste() {
+    alert('ok');
+  }
 
 }
