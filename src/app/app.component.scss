@@ -117,3 +117,13 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+ion-label {
+  color: rgb(121, 76, 14) !important;
+  font-size: 16px !important;
+}
+
+ion-icon {
+  color: rgb(121, 76, 14) !important;
+  font-size: 18px !important;
+}

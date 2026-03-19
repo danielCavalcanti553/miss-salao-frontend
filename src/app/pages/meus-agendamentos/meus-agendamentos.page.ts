@@ -7,7 +7,10 @@ import {
   IonTitle,
   IonCard,
   IonCardContent,
-  IonButton
+  IonButton,
+  IonBackButton,
+  IonButtons,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 
 import { Auth, authState } from '@angular/fire/auth';
@@ -28,7 +31,11 @@ import { ServicosService } from 'src/app/service/servicos.service';
     IonCard,
     IonCardContent,
     IonButton,
-    CommonModule
+    CommonModule,
+    IonButton,
+    IonButtons,
+    IonMenuButton,
+    IonBackButton
   ]
 })
 export class MeusAgendamentosPage implements OnInit {
