@@ -23,6 +23,8 @@ import { Agenda } from '../models/agenda.model';
 })
 export class AgendaService {
 
+  agendamentosRef = collection(this.firestore, 'agendamentos');
+
   constructor(private firestore: Firestore) { }
 
   private agendaRef = collection(this.firestore, 'agenda');
@@ -205,7 +207,7 @@ export class AgendaService {
 
   }
 
-  agendamentosRef = collection(this.firestore, 'agendamentos');
+
 
   // BUSCAR AGENDAMENTOS DO CLIENTE
   async buscarMeusAgendamentos(usuarioId: string) {
@@ -222,6 +224,37 @@ export class AgendaService {
       id: doc.id,
       ...doc.data()
     }));
+
+  }
+
+  async buscaMeusAgendamentosInicial(usuarioId: string) {
+
+    const q = query(
+      this.agendamentosRef,
+      where('usuarioId', '==', usuarioId),
+      orderBy('data', 'desc'),
+      limit(3)
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot;
+
+
+  }
+
+  async buscaMeusAgendamentosMais(usuarioId: string, lastDoc: any) {
+
+    const q = query(
+      this.agendamentosRef,
+      where('usuarioId', '==', usuarioId),
+      orderBy('data', 'desc'),
+      startAfter(lastDoc),
+      limit(3)
+    );
+
+    return await getDocs(q);
+
 
   }
 

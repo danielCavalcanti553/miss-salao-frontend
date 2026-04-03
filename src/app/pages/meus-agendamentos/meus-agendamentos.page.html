@@ -74,6 +74,10 @@
     </ng-template>
   </ion-modal> -->
 
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
   <ion-action-sheet [isOpen]="isActionSheetOpen" header="Deseja remover agendamento?" [buttons]="actionSheetButtons"
     (didDismiss)="setOpen(false, $event)"></ion-action-sheet>
 </ion-content>

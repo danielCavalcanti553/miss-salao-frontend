@@ -18,7 +18,9 @@ import {
   IonFab,
   IonFabButton,
   IonModal,
-  IonActionSheet
+  IonActionSheet,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
 import type { OverlayEventDetail } from '@ionic/core';
 import { Auth, authState } from '@angular/fire/auth';
@@ -69,7 +71,9 @@ addIcons({
     IonCardTitle,
     IonCardSubtitle,
     IonFab,
-    IonFabButton
+    IonFabButton,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
   ]
 })
 export class MeusAgendamentosPage implements OnInit {
@@ -78,12 +82,14 @@ export class MeusAgendamentosPage implements OnInit {
   mapaServicos: any = {};
   selectedAgenda: any = null;
   isModalOpen = false;
+  lastDoc: any = null;
 
   constructor(
     private auth: Auth,
     private agendaService: AgendaService,
     private servicosService: ServicosService
   ) { }
+
 
   async ngOnInit() {
     const listaServicos = await this.servicosService.listar();
@@ -95,9 +101,32 @@ export class MeusAgendamentosPage implements OnInit {
     authState(this.auth).subscribe(async user => {
       if (!user) return;
 
-      this.agendamentos = await this.agendaService.buscarMeusAgendamentos(user.uid);
+      let snapshot = await this.agendaService.buscaMeusAgendamentosInicial(user.uid);
+      this.agendamentos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      console.log(this.agendamentos)
+      this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
+
     });
   }
+
+  onIonInfinite(event: any) {
+    authState(this.auth).subscribe(async user => {
+      if (!user) return;
+
+      let snapshot = await this.agendaService.buscaMeusAgendamentosMais(user.uid, this.lastDoc);
+
+      let response = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      this.agendamentos.push(response)
+      console.log(response)
+
+      this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    });
+
+
+  }
+
+
 
   formatarData(data: string) {
     const d = new Date(data);
@@ -184,6 +213,8 @@ export class MeusAgendamentosPage implements OnInit {
   fecharModal() {
     this.isModalOpen = false;
   }
+
+
 
   //scroll
 
