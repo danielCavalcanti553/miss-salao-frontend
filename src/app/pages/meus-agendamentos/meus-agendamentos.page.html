@@ -12,52 +12,68 @@
 <ion-content class="ion-padding">
 
   <ion-card *ngFor="let a of agendamentos">
+    <ion-fab vertical="top" horizontal="end" *ngIf="a.status === 'AGENDADO'">
 
-    <ion-card-content>
+      <ion-icon (click)="setInit(true,a)" name="close-circle-outline"></ion-icon>
+    </ion-fab>
 
-      <h2>
-        📅 {{ formatarData(a.data) }}
-      </h2>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="calendar-outline"></ion-icon> {{ formatarData(a.data) }}
 
-      <p>
-        ⏰ {{a.horario}}
-      </p>
+        <ion-icon name="time-outline"></ion-icon> {{a.horario}}
 
-      <p>
-        👩 Profissional:
-        <b>{{a.profissionalNome}}</b>
-      </p>
-
-      <p>
-        ✂ Serviços
-      </p>
-
-      <ul>
-
-        <li *ngFor="let s of a.servicos">
-          {{ getNomeServico(s) }}
-        </li>
-
-      </ul>
-
-      <p>
-        Status:
-        <b [ngClass]="{
-          'status-agendado': a.status === 'AGENDADO',
+      </ion-card-title>
+      <ion-card-subtitle>
+        <b [ngClass]="{'status-agendado': a.status === 'AGENDADO',
           'status-cancelado': a.status === 'CANCELADO',
-          'status-concluido': a.status === 'CONCLUIDO'
-        }">
+          'status-concluido': a.status === 'CONCLUIDO'}">
           {{a.status}}
         </b>
+
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><span *ngFor="let s of a.servicos">
+          {{ getNomeServico(s) }}
+        </span></p>
+      <p>
+        <ion-icon name="person-add-outline"></ion-icon> Profissional:
+        <b>{{a.profissionalNome}}</b>
       </p>
-
-
-      <ion-button *ngIf="a.status === 'AGENDADO'" color="danger" expand="block" (click)="cancelar(a)">
-        Cancelar Agendamento
-      </ion-button>
-
     </ion-card-content>
-
   </ion-card>
 
+  <!--
+  <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="true">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Agenda</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding conteudo-modal">
+        <ion-icon name="calendar-outline"></ion-icon> {{conteudoModal.data}}
+        <ion-icon name="time-outline"></ion-icon> {{conteudoModal.horario}}
+        <p><span *ngFor="let s of conteudoModal.servicos">
+            {{ getNomeServico(s) }}
+          </span></p>
+        <p>
+
+          <ion-button (click)="setOpen(true)">Open</ion-button>
+          <ion-action-sheet [isOpen]="isActionSheetOpen" header="Actions" [buttons]="actionSheetButtons"
+            (didDismiss)="setOpen(false)"></ion-action-sheet>
+
+
+      </ion-content>
+    </ng-template>
+  </ion-modal> -->
+
+  <ion-action-sheet [isOpen]="isActionSheetOpen" header="Deseja remover agendamento?" [buttons]="actionSheetButtons"
+    (didDismiss)="setOpen(false, $event)"></ion-action-sheet>
 </ion-content>

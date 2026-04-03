@@ -1,14 +1,32 @@
 .status-agendado {
-  color: #2ecc71;
-  font-weight: bold;
+  color: green;
 }
 
 .status-cancelado {
-  color: #e74c3c;
-  font-weight: bold;
+  color: red;
 }
 
 .status-concluido {
-  color: #3498db;
-  font-weight: bold;
+  color: grey;
+}
+
+ion-card-title {
+  font-size: 18px;
+}
+
+ion-fab {
+  font-size: 20px;
+}
+
+span {
+  display: inline-block;
+  background-color: #eeeeee;
+  padding: 2px;
+  margin-right: 2px;
+
+}
+
+.conteudo-modal {
+  text-align: center;
+  font-size: 18px;
 }

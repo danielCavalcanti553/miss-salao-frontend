@@ -11,7 +11,9 @@ import {
   query,
   where,
   DocumentReference,
-  orderBy
+  orderBy,
+  limit,
+  startAfter
 } from '@angular/fire/firestore';
 
 import { Agenda } from '../models/agenda.model';
@@ -223,7 +225,39 @@ export class AgendaService {
 
   }
 
+  async buscarPaginado(uid: string, limitNumber: number, lastDoc: any) {
+
+    let q;
+
+    if (lastDoc) {
+      q = query(
+        collection(this.firestore, 'agendamentos'),
+        where('userId', '==', uid),
+        orderBy('data', 'desc'),
+        startAfter(lastDoc),
+        limit(limitNumber)
+      );
+    } else {
+      q = query(
+        collection(this.firestore, 'agendamentos'),
+        where('userId', '==', uid),
+        orderBy('data', 'desc'),
+        limit(limitNumber)
+      );
+    }
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      __doc: doc // 👈 ESSENCIAL para paginação
+    }));
+  }
+
   async cancelarAgendamento(agendamentoId: string) {
+
+    console.log(agendamentoId + '  IDDDD')
 
     const agendamentoDoc = doc(this.firestore, 'agendamentos', agendamentoId);
 
