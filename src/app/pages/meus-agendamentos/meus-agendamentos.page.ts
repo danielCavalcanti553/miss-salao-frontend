@@ -98,14 +98,20 @@ export class MeusAgendamentosPage implements OnInit {
       this.mapaServicos[s.id] = s.descricao;
     });
 
+    this.carregaAgenda();
+
+  }
+
+  hasMore = true;
+
+  carregaAgenda() {
     authState(this.auth).subscribe(async user => {
       if (!user) return;
 
-      let snapshot = await this.agendaService.buscaMeusAgendamentosInicial(user.uid);
-      this.agendamentos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      console.log(this.agendamentos)
-      this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
+      let response = await this.agendaService.buscaMeusAgendamentosInicial(user.uid, 5);
 
+      this.agendamentos = response.dados;
+      this.lastDoc = response.lastDoc;
     });
   }
 
@@ -113,14 +119,22 @@ export class MeusAgendamentosPage implements OnInit {
     authState(this.auth).subscribe(async user => {
       if (!user) return;
 
-      let snapshot = await this.agendaService.buscaMeusAgendamentosMais(user.uid, this.lastDoc);
+      let response = await this.agendaService.buscaMeusAgendamentosMais(user.uid, this.lastDoc, 5);
 
-      let response = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      this.agendamentos = [
+        ...this.agendamentos,
+        ...response.dados
+      ];
 
-      this.agendamentos.push(response)
-      console.log(response)
+      this.lastDoc = response.lastDoc;
 
-      this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
+      // 🔥 REGRA DE PARADA
+      if (response.dados.length < 3) {
+        this.hasMore = false;
+        event.target.disabled = true; // 🚀 para o infinite scroll
+      }
+
+      event.target.complete();
     });
 
 

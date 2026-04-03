@@ -227,35 +227,61 @@ export class AgendaService {
 
   }
 
-  async buscaMeusAgendamentosInicial(usuarioId: string) {
+  async buscaMeusAgendamentosInicial(usuarioId: string, limite: number) {
 
     const q = query(
       this.agendamentosRef,
       where('usuarioId', '==', usuarioId),
       orderBy('data', 'desc'),
-      limit(3)
+      limit(limite)
     );
 
     const snapshot = await getDocs(q);
 
-    return snapshot;
+    const dados = snapshot.docs.map(doc => {
+      const d: any = doc.data();
 
+      return {
+        id: doc.id,
+        ...d,
+        data: d.data ? new Date(d.data) : null,
+        dataCriacao: d.dataCriacao?.toDate ? d.dataCriacao.toDate() : null
+      };
+    });
 
+    return {
+      dados,
+      lastDoc: snapshot.docs[snapshot.docs.length - 1] || null
+    };
   }
 
-  async buscaMeusAgendamentosMais(usuarioId: string, lastDoc: any) {
+  async buscaMeusAgendamentosMais(usuarioId: string, lastDoc: any, limite: number) {
 
     const q = query(
       this.agendamentosRef,
       where('usuarioId', '==', usuarioId),
       orderBy('data', 'desc'),
       startAfter(lastDoc),
-      limit(3)
+      limit(limite)
     );
 
-    return await getDocs(q);
+    const snapshot = await getDocs(q);
 
+    const dados = snapshot.docs.map(doc => {
+      const d: any = doc.data();
 
+      return {
+        id: doc.id,
+        ...d,
+        data: d.data ? new Date(d.data) : null,
+        dataCriacao: d.dataCriacao?.toDate ? d.dataCriacao.toDate() : null
+      };
+    });
+
+    return {
+      dados,
+      lastDoc: snapshot.docs[snapshot.docs.length - 1] || null
+    };
   }
 
   async buscarPaginado(uid: string, limitNumber: number, lastDoc: any) {
